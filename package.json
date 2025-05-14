@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node generate-manifest.js",
+    "build": "vite build && node generate-manifest.mjs",
     "preview": "vite preview",
-    "generate-manifest": "node generate-manifest.js"
+    "generate-manifest": "node generate-manifest.mjs"
   },
   "dependencies": {
     "@microsoft/office-js": "^1.1.110",
