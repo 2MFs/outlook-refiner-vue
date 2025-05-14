@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+           xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides/1.0"
+           xsi:type="Mail">
+  <Id>f13e95d2-8021-47ff-bbd5-861bc0efb5fa</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>Vue Refiner</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="Mail Refiner AI" />
+  <Description DefaultValue="潤色與翻譯你的郵件文字" />
+  <IconUrl DefaultValue="https://localhost:5173/icon.png"/>
+  <HighResolutionIconUrl DefaultValue="https://localhost:5173/icon.png"/>
+  <SupportUrl DefaultValue="https://localhost:5173/" />
+  <AppDomains>
+    <AppDomain>https://localhost:5173</AppDomain>
+  </AppDomains>
+  <Hosts>
+    <Host Name="Mailbox"/>
+  </Hosts>
+  <Requirements>
+    <Sets DefaultMinVersion="1.5">
+      <Set Name="Mailbox" />
+    </Sets>
+  </Requirements>
+  <FormSettings>
+    <Form xsi:type="ItemRead">
+      <DesktopSettings>
+        <SourceLocation DefaultValue="https://localhost:5173/" />
+        <RequestedHeight>350</RequestedHeight>
+      </DesktopSettings>
+    </Form>
+  </FormSettings>
+  <Permissions>ReadItem</Permissions>
+
+  <VersionOverrides Version="1.0" xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.0">
+    <Requirements>
+      <bt:Sets DefaultMinVersion="1.5">
+        <bt:Set Name="Mailbox" />
+      </bt:Sets>
+    </Requirements>
+    <Hosts>
+      <Host Name="Mailbox">
+        <ExtensionPoint xsi:type="MessageReadCommandSurface">
+          <OfficeTab id="TabDefault">
+            <Group id="msgReadGroup">
+              <Label resid="groupLabel"/>
+              <Control xsi:type="Button" id="msgReadButton">
+                <Label resid="buttonLabel"/>
+                <Supertip>
+                  <Title resid="buttonLabel"/>
+                  <Description resid="buttonTooltip"/>
+                </Supertip>
+                <Icon>
+                  <bt:Image size="16" resid="icon16"/>
+                  <bt:Image size="32" resid="icon32"/>
+                  <bt:Image size="80" resid="icon80"/>
+                </Icon>
+                <Action xsi:type="ShowTaskPane">
+                  <SourceLocation resid="taskpaneUrl"/>
+                  <Title resid="paneTitle"/>
+                </Action>
+              </Control>
+            </Group>
+          </OfficeTab>
+        </ExtensionPoint>
+      </Host>
+    </Hosts>
+    <Resources>
+      <bt:Images>
+        <bt:Image id="icon16" DefaultValue="https://localhost:5173/icon-16.png"/>
+        <bt:Image id="icon32" DefaultValue="https://localhost:5173/icon-32.png"/>
+        <bt:Image id="icon80" DefaultValue="https://localhost:5173/icon-80.png"/>
+      </bt:Images>
+      <bt:Urls>
+        <bt:Url id="taskpaneUrl" DefaultValue="https://localhost:5173/" />
+      </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="groupLabel" DefaultValue="AI Refiner"/>
+        <bt:String id="buttonLabel" DefaultValue="潤色/翻譯"/>
+        <bt:String id="paneTitle" DefaultValue="Mail Refiner AI"/>
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        <bt:String id="buttonTooltip" DefaultValue="使用 AI 潤色或翻譯郵件內容"/>
+      </bt:LongStrings>
+    </Resources>
+  </VersionOverrides>
+</OfficeApp>

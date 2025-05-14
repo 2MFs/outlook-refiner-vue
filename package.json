@@ -6,16 +6,20 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sideload": "office-addin-debugging start manifest.xml"
   },
   "dependencies": {
     "@microsoft/office-js": "^1.1.110",
+    "@tailwindcss/vite": "^4.1.6",
     "axios": "^1.9.0",
+    "tailwindcss": "^4.1.6",
     "vite-plugin-mkcert": "^1.17.8",
     "vue": "^3.5.13"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.3",
+    "office-addin-debugging": "^6.0.3",
     "vite": "^6.3.5"
   }
 }

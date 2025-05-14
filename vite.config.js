@@ -1,17 +1,18 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import mkcert from 'vite-plugin-mkcert'
+import tailwindcss from '@tailwindcss/vite'
 import fs from 'fs'
+import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
   server: {
     https: {
-      key: fs.readFileSync('./localhost-key.pem'),
-      cert: fs.readFileSync('./localhost.pem'),
+      key: fs.readFileSync(path.resolve(__dirname, 'localhost.key')),
+      cert: fs.readFileSync(path.resolve(__dirname, 'localhost.crt')),
     },
-    host: 'localhost',
-    port: 5173
+    port: 5173,
+    strictPort: true,
   },
-  plugins: [vue(),mkcert()],
+  plugins: [vue(),tailwindcss(),],
 })
