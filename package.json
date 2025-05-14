@@ -1,0 +1,22 @@
+{
+  "name": "outlook-refiner-vue",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "generate-manifest": "node generate-manifest.js"
+  },
+  "dependencies": {
+    "@microsoft/office-js": "^1.1.110",
+    "axios": "^1.9.0",
+    "vite-plugin-mkcert": "^1.17.8",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.3",
+    "vite": "^6.3.5"
+  }
+}
