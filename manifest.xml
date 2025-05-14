@@ -3,18 +3,18 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
            xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides/1.0"
-           xsi:type="Mail">
+           xsi:type="MessageRead">
   <Id>f13e95d2-8021-47ff-bbd5-861bc0efb5fa</Id>
   <Version>1.0.0.0</Version>
   <ProviderName>Vue Refiner</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="Mail Refiner AI" />
   <Description DefaultValue="潤色與翻譯你的郵件文字" />
-  <IconUrl DefaultValue="https://localhost:5173/icon.png"/>
-  <HighResolutionIconUrl DefaultValue="https://localhost:5173/icon.png"/>
-  <SupportUrl DefaultValue="https://localhost:5173/" />
+  <IconUrl DefaultValue="https://outlook-refiner-vue.vercel.app/icon.png"/>
+  <HighResolutionIconUrl DefaultValue="https://outlook-refiner-vue.vercel.app/icon.png"/>
+  <SupportUrl DefaultValue="https://github.com/2MFs/outlook-refiner-vue" />
   <AppDomains>
-    <AppDomain>https://localhost:5173</AppDomain>
+    <AppDomain>https://outlook-refiner-vue.vercel.app/</AppDomain>
   </AppDomains>
   <Hosts>
     <Host Name="Mailbox"/>
@@ -27,7 +27,7 @@
   <FormSettings>
     <Form xsi:type="ItemRead">
       <DesktopSettings>
-        <SourceLocation DefaultValue="https://localhost:5173/" />
+        <SourceLocation DefaultValue="https://outlook-refiner-vue.vercel.app/" />
         <RequestedHeight>350</RequestedHeight>
       </DesktopSettings>
     </Form>
@@ -69,12 +69,12 @@
     </Hosts>
     <Resources>
       <bt:Images>
-        <bt:Image id="icon16" DefaultValue="https://localhost:5173/icon-16.png"/>
-        <bt:Image id="icon32" DefaultValue="https://localhost:5173/icon-32.png"/>
-        <bt:Image id="icon80" DefaultValue="https://localhost:5173/icon-80.png"/>
+        <bt:Image id="icon16" DefaultValue="https://outlook-refiner-vue.vercel.app/icon-16.png"/>
+        <bt:Image id="icon32" DefaultValue="https://outlook-refiner-vue.vercel.app/icon-32.png"/>
+        <bt:Image id="icon80" DefaultValue="https://outlook-refiner-vue.vercel.app/icon-80.png"/>
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="taskpaneUrl" DefaultValue="https://localhost:5173/" />
+        <bt:Url id="taskpaneUrl" DefaultValue="https://outlook-refiner-vue.vercel.app/" />
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="groupLabel" DefaultValue="AI Refiner"/>
