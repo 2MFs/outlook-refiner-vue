@@ -224,15 +224,19 @@ function getSelectedText() {
     return;
   }
 
-  Office.context.mailbox.item.getSelectedDataAsync(Office.CoercionType.Text, function (result) {
-    if (result.status === Office.AsyncResultStatus.Succeeded) {
-      inputText.value = result.value.data;
-      isTextSelected.value = inputText.value.trim().length > 0;
-      showAlert("✅ 已載入選取文字", "success");
-    } else {
-      showAlert("❌ 無法取得選取文字", "error");
-    }
-  });
+  if (Office.context?.mailbox?.item?.getSelectedDataAsync) {
+    Office.context.mailbox.item.getSelectedDataAsync(Office.CoercionType.Text, function (result) {
+      if (result.status === Office.AsyncResultStatus.Succeeded) {
+        inputText.value = result.value.data;
+        isTextSelected.value = inputText.value.trim().length > 0;
+        showAlert("✅ 已載入選取文字", "success");
+      } else {
+        showAlert("❌ 無法取得選取文字", "error");
+      }
+    });
+  } else {
+    showAlert("⚠️ 無法使用 getSelectedDataAsync，請確認增益集環境", "error");
+  }
 }
 
 async function handleAction() {
