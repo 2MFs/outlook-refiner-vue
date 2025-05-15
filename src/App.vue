@@ -78,6 +78,11 @@
       @input="handleTextInput"
     ></textarea>
 
+    <div v-if="result" class="p-4 border rounded-lg bg-gray-50">
+      <h2 class="text-lg font-semibold text-gray-700 mb-2">🎯 處理結果：</h2>
+      <p class="whitespace-pre-line text-gray-800">{{ result }}</p>
+    </div>
+
     <div class="flex gap-3">
       <button id="get-selected-text-button"
         @click="getSelectedText"
@@ -85,6 +90,14 @@
         :disabled="isTextSelected"
       >
         從郵件選取文字
+      </button>
+
+      <button id="set-clear-text-button"
+        @click="setClearText"
+        class="cursor-not-allowed bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition disabled:opacity-50"
+        :disabled="!isTextSelected"
+      >
+        清除
       </button>
 
       <button id="action-button"
@@ -135,10 +148,7 @@
       </div>
     </div>
 
-    <div v-if="result" class="p-4 border rounded-lg bg-gray-50">
-      <h2 class="text-lg font-semibold text-gray-700 mb-2">🎯 處理結果：</h2>
-      <p class="whitespace-pre-line text-gray-800">{{ result }}</p>
-    </div>
+    
   </div>
 </template>
 
@@ -170,6 +180,17 @@ const settings = ref({
 const alertMessage = ref("");
 const alertType = ref("info"); // success | error | info
 
+Office.onReady(function(info) {
+    if (info.host === Office.HostType.Outlook) {
+        showAlert("Office application: " + info.host, 'info');
+    }
+    if (info.platform === Office.PlatformType.PC) {
+        showAlert("Platform: " + info.platform, 'info');
+    }
+
+    showAlert(`Office.js is now ready in ${info.host} on ${info.platform}`,'info');
+});
+
 // 顯示 alert
 function showAlert(message, type = "info") {
   alertMessage.value = message;
@@ -178,6 +199,7 @@ function showAlert(message, type = "info") {
     alertMessage.value = "";
   }, 3000);
 }
+
 function clearAlert() {
   alertMessage.value = "";
 }
@@ -196,25 +218,44 @@ function saveSettings() {
   showAlert("✅ 已儲存 API 設定", "success");
 }
 
-function handleTextInput() {
-  isTextSelected.value = inputText.value.trim().length > 0;
-  if (isTextSelected.value) {
+function seTextSelected(textSelectedState) {
+  if (textSelectedState) {
     document.getElementById("get-selected-text-button").disabled = true;
+    document.getElementById("set-clear-text-button").disabled = false;
     document.getElementById("action-button").disabled = false;
 
     document.getElementById("get-selected-text-button").classList.add("cursor-not-allowed");
     document.getElementById("get-selected-text-button").classList.remove("cursor-pointer");
+    document.getElementById("set-clear-text-button").classList.remove("cursor-not-allowed");
+    document.getElementById("set-clear-text-button").classList.add("cursor-pointer");
     document.getElementById("action-button").classList.remove("cursor-not-allowed");
     document.getElementById("action-button").classList.add("cursor-pointer");
   } else {
     document.getElementById("get-selected-text-button").disabled = false;
+    document.getElementById("set-clear-text-button").disabled = true;
     document.getElementById("action-button").disabled = true;
 
     document.getElementById("get-selected-text-button").classList.remove("cursor-not-allowed");
     document.getElementById("get-selected-text-button").classList.add("cursor-pointer");
+    document.getElementById("set-clear-text-button").classList.add("cursor-not-allowed");
+    document.getElementById("set-clear-text-button").classList.remove("cursor-pointer");
     document.getElementById("action-button").classList.add("cursor-not-allowed");
     document.getElementById("action-button").classList.remove("cursor-pointer");
   }
+}
+
+function handleTextInput() {
+  isTextSelected.value = inputText.value.trim().length > 0;
+  seTextSelected(isTextSelected.value);
+  
+}
+
+// 清除文字
+function setClearText() {
+  inputText.value = "";
+  isTextSelected.value = false;  
+
+  seTextSelected(isTextSelected.value);
 }
 
 // 取得郵件選取文字
