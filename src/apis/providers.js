@@ -1,3 +1,4 @@
+import { ref, computed } from 'vue';
 import { useConfigStore } from 'stores/config';
 
 function getOverride(key, fallback = '') {
@@ -72,11 +73,9 @@ function createProvider(name, config = {}, env = import.meta.env, format = false
  */
 export function useProviders() {
   const configStore = useConfigStore();
-  const config = configStore.config;  
+  const config = computed(() => configStore.config || {});  
   const env = import.meta.env;
   
-  console.log('Free Config:' + configStore.config?.free?.url);
-
   return {
     openai: createProvider('openai', config, env),
     grok: createProvider('grok', config, env),

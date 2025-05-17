@@ -222,9 +222,7 @@ import { refineText, translateText } from "utils/aiClient";
 /**
  *  初始區塊
  */
-const configStore = useConfigStore();
-const providersList = useProviders();
-
+const providersList = useProviders() || providers.flatMap();
 //初始定義
 const tabs = ['OpenAI', 'Grok', 'Claude', 'Gemini', 'Customize', 'Free'] // API 提供者名稱
 const providers = tabs.map(t => t.toLowerCase()); // 確保兩邊一致
@@ -266,9 +264,15 @@ const settings = ref(
 /**
  * 初始化階段
  */
-onMounted(() => {
+onMounted(async () => {
+  const configStore = useConfigStore();  
   //loadConfig();
-  configStore.loadConfig(); // 載入設定
+  await configStore.loadConfig(); // 載入設定
+
+  if (configStore.isLoaded) {
+    providersList = useProviders(); // 此時 config 已就緒
+    // 可放心使用 providers
+  }
 
   loadDefaultProvider();
 });
