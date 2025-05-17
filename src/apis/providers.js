@@ -40,7 +40,12 @@ const promptTemplates = {
 /**
  * 動態產生 provider 設定
  */
-function createProvider(name, config, env, format = false) {
+function createProvider(name, format = false) {
+    
+  const configStore = useConfigStore();
+  const config = configStore.config || {};  
+  const env = import.meta.env;
+
   return {
     name,
     get url() {
@@ -69,16 +74,13 @@ function createProvider(name, config, env, format = false) {
  * 封裝所有 provider
  */
 export function useProviders() {
-  const configStore = useConfigStore();
-  const config = configStore.config || {};
-  const env = import.meta.env;
 
   return {
-    openai: createProvider('openai', config, env),
-    grok: createProvider('grok', config, env),
-    claude: createProvider('claude', config, env),
-    gemini: createProvider('gemini', config, env, true),  // 特別處理 URL 格式
-    customize: createProvider('customize', config, env),
-    free: createProvider('free', config, env)
+    openai: createProvider('openai'),
+    grok: createProvider('grok'),
+    claude: createProvider('claude'),
+    gemini: createProvider('gemini', true),  // 特別處理 URL 格式
+    customize: createProvider('customize'),
+    free: createProvider('free')
   };
 }

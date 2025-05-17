@@ -447,7 +447,7 @@ async function handleAction() {
     return;
   }
 
-  console.log(providersList.free)
+  console.log(providersList);
 
   result.value = "⏳ 處理中...";
   try {
