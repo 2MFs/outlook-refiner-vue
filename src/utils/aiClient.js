@@ -46,7 +46,6 @@ async function useApi(useProvider, prompt) {
     body: {
       message: prompt,
       provider: useProvider,
-    },
-    customReturn: (res) => res.output || '⚠️ 無回應內容'
+    }
   });
 }

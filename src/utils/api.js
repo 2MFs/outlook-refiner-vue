@@ -1,4 +1,3 @@
-// 可在 <script setup> 中直接使用
 export async function callApi(options = {}) {
   const {
     url = '/api/chat',
