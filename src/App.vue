@@ -348,7 +348,7 @@ function saveSettings() {
     localStorage.setItem(key, value);
 
     if (key.endsWith('_default') && value === true) {
-      newDefault = key.slice(0, -8); //replace("_default", "")
+      newDefault = key.slice(0, -8).toLowerCase(); //replace("_default", "")
     }
   }
 
