@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     if (!url || !key || !model) {
       return res.status(400).json({
         error: 'Missing provider configuration (url/key/model)',
-        details: { url, key: !!key, model, providerName },
+        details: { url, key: key, model, providerName },
       });
     }
 
