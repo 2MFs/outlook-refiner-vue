@@ -288,11 +288,13 @@ Office.onReady(function (info) {
  * JS功能模塊
  */
 
-// 初始化 defaultProvider（在載入階段呼叫）
 function loadDefaultProvider() {
-  const defaultKey = Object.keys(localStorage)
-    .find(key => key.endsWith('_default') && localStorage.getItem(key) === 'true');
-  defaultProvider.value = defaultKey ? defaultKey.replace('_default', '') : 'Free';
+  const provider = Object.keys(localStorage)
+    .find(key => key.endsWith('_default') && localStorage.getItem(key) === 'true')
+    ?.replace('_default', '') || 'free';
+
+  defaultProvider.value = provider;
+  settings.value[`${provider}_default`] = true;
 }
 
 // 所有會自動關閉設定視窗的操作包裝器
