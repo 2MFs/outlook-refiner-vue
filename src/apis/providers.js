@@ -46,6 +46,9 @@ function createProvider(name, format = false) {
   const config = configStore.config || {};  
   const env = import.meta.env;
 
+  console.log(configStore.config)
+  console.log(config);
+
   return {
     name,
     get url() {
