@@ -43,11 +43,11 @@ const promptTemplates = {
 function createProvider(name, format = false) {
     
   const configStore = useConfigStore();
-  const config = configStore.config;  
+  const config = configStore.config || {};  
   const env = import.meta.env;
 
-  console.log(name+'ConfigStore:'+configStore.config?.name)
-  console.log(name+'Config:'+config?.name);
+  console.log(name+'ConfigStore:'+configStore.config?.[name])
+  console.log(name+'Config:'+config?.[name]);
 
   return {
     name,
