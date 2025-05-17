@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     const { message, provider = {} } = req.body;
 
     //provider name
-    const providerName = provider.name?.toUpperCase() || 'free';
+    const providerName = provider.name?.toUpperCase() || '';
 
     const url = provider.url && provider.url !== '' || process.env[`${providerName}_API_URL`] || '';
     const key = provider.key && provider.key !== '' || process.env[`${providerName}_API_KEY`] || '';
@@ -18,8 +18,7 @@ export default async function handler(req, res) {
     if (!url || !key || !model) {
       return res.status(400).json({
         error: 'Missing provider configuration (url/key/model)',
-        details: { url, key: !!key, model },
-        'env-details': { url: process.env[`${providerName}_API_URL`], key: process.env[`${providerName}_API_KEY`], model: process.env[`${providerName}_API_MODEL`] },
+        details: { url, key: !!key, model, providerName },        
       });
     }
 

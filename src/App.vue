@@ -237,7 +237,7 @@ const alertMessage = ref("");
 const alertType = ref("info"); // success | error | info
 
 //預設值
-const defaultProvider = ref('Free');
+const defaultProvider = ref('free');
 const activeTab = ref('OpenAI') // 把 tab 名稱轉成 settings 的 key prefix（如 openai_url） const activeKey = computed(() => activeTab.value.toLowerCase())
 const inputText = ref(""); // 使用者輸入的文字
 const result = ref(""); // API 回傳的結果
