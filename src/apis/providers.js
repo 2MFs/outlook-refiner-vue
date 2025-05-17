@@ -72,7 +72,7 @@ function createProvider(name, config = {}, env = import.meta.env, format = false
  */
 export function useProviders() {
   const configStore = useConfigStore();
-  const config = configStore.config || {};  
+  const config = configStore.config || configStore.loadConfig || {};  
   const env = import.meta.env;
   
   console.log('Free Config url:' + configStore.config?.free?.url);
@@ -81,7 +81,7 @@ export function useProviders() {
     openai: createProvider('openai', config, env),
     grok: createProvider('grok', config, env),
     claude: createProvider('claude', config, env),
-    gemini: createProvider('gemini', true, config, env, true),  // 特別處理 URL 格式
+    gemini: createProvider('gemini', config, env, true),  // 特別處理 URL 格式
     customize: createProvider('customize', config, env),
     free: createProvider('free', config, env)
   };

@@ -447,8 +447,6 @@ async function handleAction() {
     return;
   }
 
-  console.log(providersList);
-
   result.value = "⏳ 處理中...";
   try {
     const textToProcess = inputText.value;
