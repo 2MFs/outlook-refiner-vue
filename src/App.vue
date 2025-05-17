@@ -175,10 +175,10 @@
           class="w-full cursor-pointer border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-blue-500">
           <template v-for="provider in tabs" :key="provider">
             <option
-              v-if="(settings[provider.toLowerCase() + '_url'] !== '' && settings[provider.toLowerCase() + '_model'] !== '') "
+              v-if="settings[provider.toLowerCase() + '_url'] !== '' && settings[provider.toLowerCase() + '_model'] !== ''"
               :value="provider.toLowerCase()">{{ provider }} (本地API)</option>
             <option
-              v-else-if="(providersList[provider.toLowerCase()].url !== '' && providersList[provider.toLowerCase()].model !== '')"
+              v-else-if="providersList && providersList[provider.toLowerCase()].url !== '' && providersList[provider.toLowerCase()].model !== ''"
               :value="provider.toLowerCase()">{{ provider }} <template v-if="provider.toLowerCase() !== 'free'">(雲端API)</template></option>
             <option  v-else :value="provider.toLowerCase()" disabled>{{ provider }} (未設定)
             </option>
@@ -222,7 +222,7 @@ import { refineText, translateText } from "utils/aiClient";
 /**
  *  初始區塊
  */
-const providersList = useProviders() || providers.flatMap();
+let providersList;
 //初始定義
 const tabs = ['OpenAI', 'Grok', 'Claude', 'Gemini', 'Customize', 'Free'] // API 提供者名稱
 const providers = tabs.map(t => t.toLowerCase()); // 確保兩邊一致
@@ -268,6 +268,10 @@ onMounted(async () => {
   const configStore = useConfigStore();  
   //loadConfig();
   await configStore.loadConfig(); // 載入設定
+
+  if (configStore.isLoaded){
+    providersList = useProviders();
+  }
 
   loadDefaultProvider();
 });
