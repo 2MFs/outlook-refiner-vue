@@ -9,11 +9,16 @@ export default async function handler(req, res) {
     const { message, provider = {} } = req.body;
 
     //provider name
-    const providerName = provider.name?.toUpperCase();
+    const providerName = provider.name?.toUpperCase() || '';
 
     const url = provider.url && provider.url !== '' || process.env[`${providerName}_API_URL`] || '';
     const key = provider.key && provider.key !== '' || process.env[`${providerName}_API_KEY`] || '';
     const model = provider.model && provider.model !=='' || process.env[`${providerName}_API_MODEL`] || '';
+
+    console.log('Name:'+providerName)
+    console.log('url:'+url)
+    console.log('key:'+key)
+    console.log('model:'+model)
 
     if (!url || !key || !model) {
       return res.status(400).json({
