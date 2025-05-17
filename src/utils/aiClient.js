@@ -10,7 +10,9 @@ export async function refineText(providers, providerName, text, style = "正式"
     throw new Error(`❌ ${providerName} API 設定不完整`);
 
   const prompt = provider.refinePrompt(text, style);
-  return await useApi(provider, prompt);
+  const useProvider = {name: provider.name, url: provider.url, model: provider.model, key: provider.key};
+  
+  return await useApi(useProvider, prompt);
 }
 
 export async function translateText(providers, providerName, text, targetLang = "英文") {
@@ -20,7 +22,9 @@ export async function translateText(providers, providerName, text, targetLang = 
     throw new Error(`❌ ${providerName} API 設定不完整`);
 
   const prompt = provider.translatePrompt(text, targetLang);
-  return await useApi(provider, prompt);
+  const useProvider = {name: provider.name, url: provider.url, model: provider.model, key: provider.key};
+
+  return await useApi(useProvider, prompt);
 }
 
 /**
@@ -30,9 +34,11 @@ export async function translateText(providers, providerName, text, targetLang = 
 async function useApi(provider, prompt) {
  
   return await callApi({
-    url: 'api/chat',    
-    body: JSON.stringify({ message: prompt }),
-    provider: provider,
+    body: JSON.stringify({ 
+        message: prompt,
+        provider: provider,
+      }),
+    
     customReturn: (res) => res.output || '⚠️ 無回應內容'
   })
 

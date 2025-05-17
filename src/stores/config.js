@@ -8,10 +8,11 @@ export const useConfigStore = defineStore('config', () => {
     try {
       const res = await fetch('/api/config');
       config.value = await res.json();
-    } catch (err) {
-      //console.warn('載入設定失敗', err);
-
-      config.value = false;
+    } catch (err) 
+    {
+      config.value = ref({});
+      console.warn('載入設定失敗', err);
+      
     }
   }
 
