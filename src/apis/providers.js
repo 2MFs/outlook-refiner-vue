@@ -46,8 +46,9 @@ function createProvider(name, format = false) {
   const config = configStore.config || {};  
   const env = import.meta.env;
 
-  console.log(name+'ConfigStore:'+configStore.config?.[name])
-  console.log(name+'Config:'+config?.[name]);
+  console.log(name+' ConfigStore url:' + configStore.config?.[name]?.url)
+  console.log(name+' Config url:' + config?.[name]?.url);
+   console.log('Free Config url:' + config?.free?.url);
 
   return {
     name,
