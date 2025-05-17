@@ -40,15 +40,8 @@ const promptTemplates = {
 /**
  * 動態產生 provider 設定
  */
-function createProvider(name, format = false) {
-    
-  const configStore = useConfigStore();
-  const config = configStore.config || {};  
-  const env = import.meta.env;
+function createProvider(name, config = {}, env = import.meta.env, format = false) {
 
-  console.log(name+' ConfigStore url:' + configStore.config?.[name]?.url)
-  console.log(name+' Config url:' + config?.[name]?.url);
-   console.log('Free Config url:' + config?.free?.url);
 
   return {
     name,
@@ -78,13 +71,18 @@ function createProvider(name, format = false) {
  * 封裝所有 provider
  */
 export function useProviders() {
+  const configStore = useConfigStore();
+  const config = configStore.config || {};  
+  const env = import.meta.env;
+  
+  console.log('Free Config url:' + configStore.config?.free?.url);
 
   return {
-    openai: createProvider('openai'),
-    grok: createProvider('grok'),
-    claude: createProvider('claude'),
-    gemini: createProvider('gemini', true),  // 特別處理 URL 格式
-    customize: createProvider('customize'),
-    free: createProvider('free')
+    openai: createProvider('openai', config, env),
+    grok: createProvider('grok', config, env),
+    claude: createProvider('claude', config, env),
+    gemini: createProvider('gemini', true, config, env, true),  // 特別處理 URL 格式
+    customize: createProvider('customize', config, env),
+    free: createProvider('free', config, env)
   };
 }
