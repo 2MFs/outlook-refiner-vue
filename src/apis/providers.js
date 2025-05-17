@@ -73,7 +73,7 @@ function createProvider(name, config = {}, env = import.meta.env, format = false
  */
 export function useProviders() {
   const configStore = useConfigStore();
-  const config = computed(() => configStore.config || {});  
+  const config = computed(() => configStore.config);  
   const env = import.meta.env;
   
   return {
