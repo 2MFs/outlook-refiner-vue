@@ -8,6 +8,7 @@ export const useConfigStore = defineStore('config', () => {
     try {
       const res = await fetch('/api/config');
       config.value = await res.json();
+      console.log(config);
     } catch (err) 
     {
       config.value = ref({});
