@@ -72,10 +72,10 @@ function createProvider(name, config = {}, env = import.meta.env, format = false
  */
 export function useProviders() {
   const configStore = useConfigStore();
-  const config = configStore.config || configStore.loadConfig || {};  
+  const config = configStore.config;  
   const env = import.meta.env;
   
-  console.log('Free Config url:' + configStore.config?.free?.url);
+  console.log('Free Config:' + configStore.config?.free?.url);
 
   return {
     openai: createProvider('openai', config, env),
