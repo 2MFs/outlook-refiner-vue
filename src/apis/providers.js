@@ -41,7 +41,7 @@ const promptTemplates = {
 /**
  * 動態產生 provider 設定
  */
-function createProvider(name, config = {}, env = import.meta.env, format = false) {
+function createProvider(name, config = {}, env = import.meta.env, customUrl = false) {
 
 
   return {
@@ -49,7 +49,7 @@ function createProvider(name, config = {}, env = import.meta.env, format = false
     get url() {
       const configUrl = config?.[name]?.url;
       const envUrl = env[`VITE_${name.toUpperCase()}_API_URL`];
-      if (format && configUrl && env[`VITE_${name.toUpperCase()}_API_MODEL`]) {
+      if (customUrl && configUrl && env[`VITE_${name.toUpperCase()}_API_MODEL`]) {
         const model = config?.[name]?.model || env[`VITE_${name.toUpperCase()}_API_MODEL`] || '';
         return getOverride(`${name}_url`, formatUrl(configUrl, { model, key: '' }));
       }
@@ -72,16 +72,17 @@ function createProvider(name, config = {}, env = import.meta.env, format = false
  * 封裝所有 provider
  */
 export function useProviders() {
-  const configStore = useConfigStore();
-  const config = computed(() => configStore.config);  
+  const configStore = useConfigStore();   
   const env = import.meta.env;
+
+  const get = (name, customUrl = false) => () => createProvider(name, configStore.config, env, customUrl);
   
   return {
-    openai: createProvider('openai', config, env),
-    grok: createProvider('grok', config, env),
-    claude: createProvider('claude', config, env),
-    gemini: createProvider('gemini', config, env, true),  // 特別處理 URL 格式
-    customize: createProvider('customize', config, env),
-    free: createProvider('free', config, env)
+    get openai() { return get('openai')(); },
+    get grok() { return get('grok')(); },
+    get claude() { return get('claude')(); },
+    get gemini() { return get('gemini', true)(); },
+    get customize() { return get('customize')(); },
+    get free() { return get('free')(); },
   };
 }
