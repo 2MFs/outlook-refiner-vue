@@ -73,9 +73,15 @@ function createProvider(name, config = {}, env = import.meta.env, format = false
  */
 export function useProviders() {
   const configStore = useConfigStore();
-  const config = computed(() => configStore.config || {});  
+
+  const config = ref();
   const env = import.meta.env;
-  
+
+  if (configStore.isLoaded) {
+    config = computed(() => configStore.config || {});  
+    // 可放心使用 config
+  }
+
   return {
     openai: createProvider('openai', config, env),
     grok: createProvider('grok', config, env),

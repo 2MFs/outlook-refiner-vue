@@ -269,11 +269,6 @@ onMounted(async () => {
   //loadConfig();
   await configStore.loadConfig(); // 載入設定
 
-  if (configStore.isLoaded) {
-    providersList = useProviders(); // 此時 config 已就緒
-    // 可放心使用 providers
-  }
-
   loadDefaultProvider();
 });
 
