@@ -382,6 +382,15 @@ onMounted(async () => {
   }
 
   loadDefaultProvider();
+
+  const dropdownToggleEl = document.getElementById('dropdownTopButton')
+  const dropdownMenuEl = document.getElementById('dropdownTop')
+
+  if (dropdownToggleEl && dropdownMenuEl) {
+    const dropdown = new Dropdown(dropdownMenuEl, dropdownToggleEl)
+    // 可選設定：dropdown.show(), dropdown.hide()
+  }
+
 });
 
 // 監聽office.js 事件
