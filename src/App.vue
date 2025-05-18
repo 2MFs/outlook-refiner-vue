@@ -217,12 +217,11 @@
   </div>
   <div class=" max-w-2xl mx-auto space-y-6">
 
-    <div class="flex justify-between items-center gap-4">   
-      <div class="py-4 rounded w-1/4 text-center"></div>
-      <div class="py-4 rounded w-1 text-center">
-        <div class="text-gray-300 text-center my-2 font-mono">1.0.0</div>
+    <div class="flex justify-between items-center gap-4">         
+      <div class="py-4 rounded w-1 ">
+        <div class="text-gray-300 text-center font-mono me-3 mb-3 md:mb-0 px-5 py-2.5">1.0.0</div>
       </div>
-      <div class="py-4 rounded w-1/3 text-right ">
+      <div class="py-4 rounded w-1/2 text-right ">
         <languageSelectorComponent bgColor="" shadowSize="" ringSize="" ringColor="" ringInset="" ringInsetColor="">
         </languageSelectorComponent>
       </div>
