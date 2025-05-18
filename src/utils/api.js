@@ -1,3 +1,6 @@
+import i18n from 'i18n'
+const { t } = i18n.global;
+
 export async function callApi(options = {}) {
   const {
     url = '/api/chat',
@@ -24,9 +27,9 @@ export async function callApi(options = {}) {
     }
 
     // 預設回傳格式
-    return data?.choices?.[0]?.message?.content?.trim() || "⚠️ 無回應內容"
+    return data?.choices?.[0]?.message?.content?.trim() || `⚠️ ${t("No response content.")}`
   } catch (error) {
-    console.error('API 呼叫錯誤:', error)
-    return "⚠️ 請求失敗"
+    console.error(t("API call error:"), error)
+    return `⚠️ ${t("Request failed.")}`
   }
 }

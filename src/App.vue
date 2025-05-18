@@ -2,9 +2,9 @@
   <div class="p-6 max-w-2xl mx-auto space-y-6 bg-white rounded-2xl shadow-md">
     <!-- 標題與設定 -->
     <div class="flex justify-between items-center">
-      <h1 class="text-xl font-semibold text-gray-800">📬 Mail Refiner AI</h1>
+      <h1 class="text-xl font-semibold text-gray-800">📬 {{ $t("Email refiner AI") }}</h1>
       <button @click="showSettings = !showSettings" class="cursor-pointer text-sm text-gray-600 hover:text-blue-600">
-        ⚙️ API 設定
+        ⚙️ {{ $t("API Settings") }}
       </button>
     </div>
 
@@ -22,7 +22,7 @@
     </div>
 
     <div v-if="showSettings" class="p-6 bg-gray-50 border border-gray-200 rounded-xl space-y-6">
-      <h2 class="text-xl font-semibold text-gray-800">API 設定</h2>
+      <h2 class="text-xl font-semibold text-gray-800">{{ $t("API Settings") }}</h2>
 
       <div
         class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
@@ -51,7 +51,7 @@
                 placeholder="" />
               <label :for="tabContent + `_url`"
                 class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                API URL
+                {{ $t("API URL") }}
               </label>
             </div>
             <div class="relative z-0 w-full mb-5 group" v-if="tabContent.includes('Free') === false">
@@ -77,7 +77,7 @@
               </button>
               <label :for="tabContent + `_key`"
                 class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                API KEY
+                {{ $t("API KEY") }}
               </label>
             </div>
             <div class="relative z-0 w-full mb-5 group" v-if="tabContent.includes('Free') === false">
@@ -87,7 +87,7 @@
                 placeholder="" />
               <label :for="tabContent + '_model'"
                 class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                Model
+                {{ $t("Model") }}
               </label>
             </div>
             <div class="relative z-0 w-full mb-5 group">
@@ -98,7 +98,7 @@
                 <div
                   class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600">
                 </div>
-                <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">預設AI</span>
+                <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $t("Default AI") }} </span>
               </label>
             </div>
           </div>
@@ -109,78 +109,81 @@
       <div class="flex justify-center pt-6">
         <button @click="saveSettings"
           class="cursor-pointer bg-green-600 text-white px-6 py-2 rounded-lg shadow hover:bg-green-700 transition">
-          💾 儲存設定
+          💾 {{ $t("Save settings") }}
         </button>
       </div>
 
       <div class="mt-4 text-sm text-green-600 dark:text-green-300" v-if="defaultProvider">
-        ✅ 目前預設 AI：<strong>{{ defaultProvider }}</strong>
+        ✅ {{ $t("Current default AI:") }}<strong>{{ defaultProvider }}</strong>
       </div>
 
     </div>
 
     <div>
-      <p v-if="isTextSelected" class="text-sm text-green-600">✅ 已選取文字，請選擇要潤色或翻譯的操作。</p>
-      <p v-else class="text-sm text-red-500">⚠️ 尚未選取任何文字，請先選擇郵件中的文字。</p>
+      <p v-if="isTextSelected" class="text-sm text-green-600">✅ {{ $t("The selected text has been highlighted; please choose the operation for refinement or translation.") }}</p>
+      <p v-else class="text-sm text-red-500">⚠️ {{ $t("Please select text in the email first, as no text has been selected yet.") }}</p>
     </div>
 
-    <textarea v-model="inputText" placeholder="請貼上要潤色或翻譯的文字，或者選擇郵件中的一段文字"
+    <textarea v-model="inputText"
+      :placeholder="t('Please paste the text you want to polish or translate, or select a passage from the email.')"
       class="w-full h-40 border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
       @input="handleTextInput"></textarea>
 
-    <div v-if="result" class="p-4 border rounded-lg bg-gray-50">
-      <h2 class="text-lg font-semibold text-gray-700 mb-2">🎯 處理結果：</h2>
-      <p class="whitespace-pre-line text-gray-800">{{ result }}</p>
+    <div v-if="rtResult" class="p-4 border rounded-lg bg-gray-50">
+      <h2 class="text-lg font-semibold text-gray-700 mb-2">🎯 {{ $t("Processing result:") }}</h2>
+      <p class="whitespace-pre-line text-gray-800">{{ rtResult }}</p>
     </div>
 
     <div class="flex gap-3">
       <button ref="getSelectedBtn" @click="wrappedGetSelectedText"
         class="cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg transition disabled:opacity-50"
         :disabled="isTextSelected">
-        從郵件選取文字
+        {{ $t("Select text from the email") }}
       </button>
 
       <button ref="setSelectedBtn" @click="wrappedSetSelectedText"
         class="cursor-not-allowed bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg transition disabled:opacity-50"
         :disabled="!isTextSelected">
-        覆蓋郵件選取文字
+        {{ $t("Cover email selected text") }}
       </button>
 
       <button ref="clearTextBtn" @click="wrappedSetClearText"
         class="cursor-not-allowed bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition disabled:opacity-50"
         :disabled="!isTextSelected">
-        清除
+        {{ $t("Clear") }}
       </button>
 
       <button ref="actionBtn" @click="wrappedHandleAction"
         class="cursor-not-allowed bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition disabled:opacity-50"
         :disabled="!isTextSelected">
-        執行
+        {{ $t("Execute") }}
       </button>
     </div>
 
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
       <div>
-        <label class="text-sm font-medium text-gray-700 block mb-1">操作模式</label>
+        <label class="text-sm font-medium text-gray-700 block mb-1">{{ $t("Operating Mode") }}</label>
         <select v-model="mode"
           class="w-full cursor-pointer border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-blue-500">
-          <option value="refine">潤色</option>
-          <option value="translate">翻譯</option>
+          <option value="refine">{{ $t("Refine") }}</option>
+          <option value="translate">{{ $t("Translation") }}</option>
         </select>
       </div>
 
       <div>
-        <label class="text-sm font-medium text-gray-700 block mb-1">使用模型</label>
+        <label class="text-sm font-medium text-gray-700 block mb-1">{{ $t("Use model") }}</label>
         <select v-model="defaultProvider"
           class="w-full cursor-pointer border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-blue-500">
           <template v-for="provider in tabs" :key="provider">
             <option
               v-if="settings[provider.toLowerCase() + '_url'] !== '' && settings[provider.toLowerCase() + '_model'] !== ''"
-              :value="provider.toLowerCase()">{{ provider }} (本地API)</option>
+              :value="provider.toLowerCase()">{{ provider }} ({{ $t("Local API") }})</option>
             <option
               v-else-if="providersList && providersList[provider.toLowerCase()].url !== '' && providersList[provider.toLowerCase()].model !== ''"
-              :value="provider.toLowerCase()">{{ provider }} <template v-if="provider.toLowerCase() !== 'free'">(雲端API)</template></option>
-            <option  v-else :value="provider.toLowerCase()" disabled>{{ provider }} (未設定)
+              :value="provider.toLowerCase()">{{ provider }} <template v-if="provider.toLowerCase() !== 'free'">({{
+                $t("Cloud API") }})</template>
+            </option>
+            <option v-else :value="provider.toLowerCase()" disabled>{{ provider }} ({{ $t("Unset") }})
             </option>
           </template>
 
@@ -188,27 +191,43 @@
       </div>
 
       <div>
-        <label class="text-sm font-medium text-gray-700 block mb-1">潤色風格</label>
+        <label class="text-sm font-medium text-gray-700 block mb-1">{{ $t("Refine style") }}</label>
         <select v-model="style" :disabled="mode !== 'refine'"
           class="w-full cursor-pointer border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-gray-100">
-          <option>正式</option>
-          <option>創意</option>
-          <option>簡潔</option>
+          <option v-for="style in styles" :key="style" v-bind:value="style.value">
+            {{ $t(style.text) }}
+          </option>
         </select>
       </div>
 
       <div>
-        <label class="text-sm font-medium text-gray-700 block mb-1">翻譯語言</label>
-        <select v-model="language" :disabled="mode !== 'translate'"
+        <label class="text-sm font-medium text-gray-700 block mb-1">{{ $t("Translation language") }}</label>
+        <select v-model="language" :disabled="mode === ''"
           class="w-full cursor-pointer border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-gray-100">
-          <option>英文</option>
-          <option>日文</option>
-          <option>韓文</option>
-          <option>繁體中文</option>
+
+          <option v-for="language in languages" :key="language" v-bind:value="language.value">
+            {{ $t(language.text) }}
+          </option>
+
         </select>
       </div>
     </div>
 
+
+  </div>
+  <div class=" max-w-2xl mx-auto space-y-6">
+
+    <div class="flex justify-between items-center gap-4">   
+      <div class="py-4 rounded w-1/4 text-center"></div>
+      <div class="py-4 rounded w-1 text-center">
+        <div class="text-gray-300 text-center my-2 font-mono">1.0.0</div>
+      </div>
+      <div class="py-4 rounded w-1/3 text-right ">
+        <languageSelectorComponent bgColor="" shadowSize="" ringSize="" ringColor="" ringInset="" ringInsetColor="">
+        </languageSelectorComponent>
+      </div>
+
+    </div>
 
   </div>
 </template>
@@ -218,17 +237,107 @@ import { ref, onMounted } from "vue";
 import { useConfigStore } from 'stores/config';
 import { useProviders } from 'apis/providers';
 import { refineText, translateText } from "utils/aiClient";
+import { useI18n } from 'vue-i18n'
 
 /**
  *  初始區塊
  */
 let providersList;
+//t方法
+const { t } = useI18n();
 //初始定義
 const tabs = ['OpenAI', 'Grok', 'Claude', 'Gemini', 'Customize', 'Free'] // API 提供者名稱
 const providers = tabs.map(t => t.toLowerCase()); // 確保兩邊一致
 const fields = ['url', 'key', 'model', 'default']; // API 設定的欄位名稱
 const keys = providers.flatMap(p => fields.map(f => `${p}_${f}`)); // 生成 localStorage 的 key 名稱，如 openai_url、openai_key、openai_model
 //const envKeys = providers.flatMap(p => fields.map(f => `${p.toUpperCase()}_API_${f.toUpperCase()}`)); // 生成環境變數的 key 名稱，如 VUE_APP_OPENAI_URL、VUE_APP_OPENAI_KEY、VUE_APP_OPENAI_MODEL
+
+const styles = [
+  { text: "Formal", value: "formal" },
+  { text: "Business", value: "business" },
+  { text: "Creativity", value: "creativity" },
+  { text: "Concise", value: "concise" },
+  { text: "Humor", value: "humor" }
+];
+
+const languages = [
+  { text: "English", value: "english" },
+  { text: "Simplified Chinese", value: "simplified chinese" },
+  { text: "Traditional Chinese", value: "traditional chinese" },
+  { text: "Spanish", value: "spanish" },
+  { text: "French", value: "french" },
+  { text: "German", value: "german" },
+  { text: "Japanese", value: "japanese" },
+  { text: "Korean", value: "korean" },
+  { text: "Russian", value: "russian" },
+  { text: "Italian", value: "italian" },
+  { text: "Portuguese", value: "portuguese" },
+  { text: "Dutch", value: "dutch" },
+  { text: "Arabic", value: "arabic" },
+  { text: "Hindi", value: "hindi" },
+  { text: "Bengali", value: "bengali" },
+  { text: "Turkish", value: "turkish" },
+  { text: "Vietnamese", value: "vietnamese" },
+  { text: "Thai", value: "thai" },
+  { text: "Swedish", value: "swedish" },
+  { text: "Norwegian", value: "norwegian" },
+  { text: "Danish", value: "danish" },
+  { text: "Finnish", value: "finnish" },
+  { text: "Polish", value: "polish" },
+  { text: "Czech", value: "czech" },
+  { text: "Hungarian", value: "hungarian" },
+  { text: "Greek", value: "greek" },
+  { text: "Hebrew", value: "hebrew" },
+  { text: "Indonesian", value: "indonesian" },
+  { text: "Malay", value: "malay" },
+  { text: "Filipino", value: "filipino" },
+  { text: "Ukrainian", value: "ukrainian" },
+  { text: "Romanian", value: "romanian" },
+  { text: "Bulgarian", value: "bulgarian" },
+  { text: "Croatian", value: "croatian" },
+  { text: "Serbian", value: "serbian" },
+  { text: "Slovak", value: "slovak" },
+  { text: "Slovenian", value: "slovenian" },
+  { text: "Lithuanian", value: "lithuanian" },
+  { text: "Latvian", value: "latvian" },
+  { text: "Estonian", value: "estonian" },
+  { text: "Persian", value: "persian" },
+  { text: "Urdu", value: "urdu" },
+  { text: "Swahili", value: "swahili" },
+  { text: "Cantonese", value: "cantonese" },
+  { text: "Tamil", value: "tamil" },
+  { text: "Telugu", value: "telugu" },
+  { text: "Marathi", value: "marathi" },
+  { text: "Gujarati", value: "gujarati" },
+  { text: "Punjabi", value: "punjabi" },
+  { text: "Malayalam", value: "malayalam" },
+  { text: "Kannada", value: "kannada" },
+  { text: "Burmese", value: "burmese" },
+  { text: "Khmer", value: "khmer" },
+  { text: "Lao", value: "lao" },
+  { text: "Amharic", value: "amharic" },
+  { text: "Zulu", value: "zulu" },
+  { text: "Xhosa", value: "xhosa" },
+  { text: "Afrikaans", value: "afrikaans" },
+  { text: "Hausa", value: "hausa" },
+  { text: "Yoruba", value: "yoruba" },
+  { text: "Igbo", value: "igbo" },
+  { text: "Pashto", value: "pashto" },
+  { text: "Kurdish", value: "kurdish" },
+  { text: "Armenian", value: "armenian" },
+  { text: "Georgian", value: "georgian" },
+  { text: "Azerbaijani", value: "azerbaijani" },
+  { text: "Kazakh", value: "kazakh" },
+  { text: "Uzbek", value: "uzbek" },
+  { text: "Mongolian", value: "mongolian" },
+  { text: "Tibetan", value: "tibetan" },
+  { text: "Nepali", value: "nepali" },
+  { text: "Sinhalese", value: "sinhalese" },
+  { text: "Fijian", value: "fijian" },
+  { text: "Maori", value: "maori" },
+  { text: "Samoan", value: "samoan" },
+  { text: "Tongan", value: "tongan" }
+];
 
 // alert 狀態
 const alertMessage = ref("");
@@ -238,9 +347,9 @@ const alertType = ref("info"); // success | error | info
 const defaultProvider = ref('free');
 const activeTab = ref('OpenAI') // 把 tab 名稱轉成 settings 的 key prefix（如 openai_url） const activeKey = computed(() => activeTab.value.toLowerCase())
 const inputText = ref(""); // 使用者輸入的文字
-const result = ref(""); // API 回傳的結果
-const style = ref("正式"); // 潤色風格
-const language = ref("英文"); // 翻譯語言
+const rtResult = ref(""); // API 回傳的結果
+const style = ref("formal"); // 潤色風格
+const language = ref("english"); // 翻譯語言
 const mode = ref("refine"); // 操作模式（潤色或翻譯）
 const isTextSelected = ref(false); // 是否有選取文字
 const showSettings = ref(false); // 是否顯示設定視窗
@@ -265,11 +374,11 @@ const settings = ref(
  * 初始化階段
  */
 onMounted(async () => {
-  const configStore = useConfigStore();  
+  const configStore = useConfigStore();
   //loadConfig();
   await configStore.loadConfig(); // 載入設定
 
-  if (configStore.isLoaded){
+  if (configStore.isLoaded) {
     providersList = useProviders();
   }
 
@@ -280,11 +389,11 @@ onMounted(async () => {
 Office.onReady(function (info) {
 
   if (info.host === null || info.platform === null) {
-    showAlert("⚠️ Office.js 尚未載入完成，請稍後再試。", 'error');
+    showAlert(`⚠️ ${t("Office.js has not finished loading yet. Please try again later.")}`, 'error');
     return;
   }
 
-  showAlert(`✅ Office.js 已經載入完成，Office應用為 ${info.host} ，平台為 ${info.platform}`, 'info');
+  showAlert(`✅ ${t('readeyEventsAlert', { host: info.host, platform: info.platform })}`, 'info');
 });
 
 /**
@@ -361,7 +470,7 @@ function saveSettings() {
     defaultProvider.value = newDefault; //儲存後才更新
   }
 
-  showAlert("✅ 已儲存 API 設定", "success");
+  showAlert(`✅ ${t("The API settings have been saved.")}`, "success");
 }
 
 // 監聽 Button 變更
@@ -402,27 +511,27 @@ function setClearText() {
 // 覆蓋郵件選取文字
 function setSelectedText() {
   if (!Office.context?.mailbox?.item) {
-    showAlert("⚠️ 增益集尚未載入完成", "error");
+    showAlert(`⚠️ ${t("Outlook add-ins has not finished loading yet.")}`, "error");
     return;
   }
 
   if (Office.context?.mailbox?.item?.setSelectedDataAsync) {
-    Office.context.mailbox.item.setSelectedDataAsync(inputText.value, function (result) {
+    Office.context.mailbox.item.setSelectedDataAsync(rtResult.value, function (result) {
       if (result.status === Office.AsyncResultStatus.Succeeded) {
-        showAlert("✅ 已覆蓋郵件選取文字", "success");
+        showAlert(`✅ ${t("The result has been overwritten on the selected text in the email.")}`, "success");
       } else {
-        showAlert("❌ 無法覆蓋郵件選取文字", "error");
+        showAlert(`❌ ${t("Unable to overwrite selected text in the email.")}`, "error");
       }
     });
   } else {
-    showAlert("⚠️ 無法使用 setSelectedDataAsync，請確認增益集環境", "error");
+    showAlert(`⚠️ ${t("Unable to use the overwrite feature. Please check the Outlook add-in environment.")}`, "error");
   }
 }
 
 // 取得郵件選取文字
 function getSelectedText() {
   if (!Office.context?.mailbox?.item) {
-    showAlert("⚠️ 增益集尚未載入完成", "error");
+    showAlert(`⚠️ ${t("The Outlook add-in has not finished loading.")}`, "error");
     return;
   }
 
@@ -433,34 +542,34 @@ function getSelectedText() {
         isTextSelected.value = inputText.value.trim().length > 0;
         //變更button狀態
         seTextSelected(isTextSelected.value);
-        showAlert("✅ 已載入選取文字", "success");
+        showAlert(`✅ ${t("Selected text has been loaded.")}`, "success");
       } else {
-        showAlert("❌ 無法取得選取文字", "error");
+        showAlert(`❌ ${t("Unable to retrieve the selected text.")}`, "error");
       }
     });
   } else {
-    showAlert("⚠️ 無法使用 getSelectedDataAsync，請確認增益集環境", "error");
+    showAlert(`⚠️ ${t("Unable to use the selection feature. Please check the Outlook add-in environment.")}`, "error");
   }
 }
 
 // 處理文字
 async function handleAction() {
   if (!isTextSelected.value) {
-    showAlert("⚠️ 尚未選取任何文字，請先選擇郵件中的文字。", "error");
+    showAlert(`⚠️ ${t("No text has been selected yet. Please select text from the email first.")}`, "error");
     return;
   }
 
-  result.value = "⏳ 處理中...";
+  rtResult.value = `⏳ ${t("Processing...")}`;
   try {
     const textToProcess = inputText.value;
     if (mode.value === "refine") {
-      result.value = await refineText(providersList, defaultProvider.value, textToProcess, style.value);
+      rtResult.value = await refineText(providersList, defaultProvider.value, textToProcess, style.value, language.value);
     } else if (mode.value === "translate") {
-      result.value = await translateText(providersList, defaultProvider.value, textToProcess, language.value);
+      rtResult.value = await translateText(providersList, defaultProvider.value, textToProcess, language.value);
     }
   } catch (err) {
     console.error(err);
-    result.value = "❌ 發生錯誤，請檢查 API 設定或輸入內容";
+    rtResult.value = `❌ ${t("An error occurred, please check the API settings or the input content.")}`;
   }
 }
 

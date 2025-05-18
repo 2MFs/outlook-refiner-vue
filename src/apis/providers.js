@@ -1,6 +1,9 @@
 import { ref, computed } from 'vue';
 import { useConfigStore } from 'stores/config';
 
+import i18n from 'i18n'
+const { t } = i18n.global;
+
 function getOverride(key, fallback = '') {
   const value = localStorage.getItem(key);
   return value !== null && value !== '' ? value : fallback;
@@ -13,28 +16,28 @@ function formatUrl(template, values) {
 // 各 AI 的 prompt 樣式
 const promptTemplates = {
   openai: {
-    refine: (text, style) => `請以「${style}」風格潤色以下內容：\n${text}`,
-    translate: (text, lang) => `請將下列文字翻譯成${lang}：\n${text}`
+    refine: (text, style, lang) => `${t("openai refine prompt", {style: style, lang: lang})} \n${text}`,
+    translate: (text, lang) => `${t("openai translate prompt", {lang: lang})} \n${text}`
   },
   grok: {
-    refine: (text, style) => `潤色成${style}風格：${text}`,
-    translate: (text, lang) => `翻譯成${lang}：${text}`
+    refine: (text, style, lang) => `${t("grok refine prompt",{style: style, lang: lang})} ${text}`,
+    translate: (text, lang) => `${t("grok translate prompt", {lang: lang})} ${text}`
   },
   claude: {
-    refine: (text, style) => `請使用 ${style} 風格潤色這段話：${text}`,
-    translate: (text, lang) => `翻譯以下內容成 ${lang}：${text}`
+    refine: (text, style, lang) => `${t("claude refine prompt",{style: style, lang: lang})} ${text}`,
+    translate: (text, lang) => `${t("claude translate prompt", {lang: lang})} ${text}`
   },
   gemini: {
-    refine: (text, style) => `用 ${style} 風格修飾以下句子：${text}`,
-    translate: (text, lang) => `請翻譯為 ${lang}：${text}`
+    refine: (text, style, lang) => `${t("gemini refine prompt", {style: style, lang: lang})} ${text}`,
+    translate: (text, lang) => `${t("gemini translate prompt", {lang: lang})} ${text}`
   },
   customize: {
-    refine: (text, style) => `用 ${style} 風格修飾以下句子：${text}`,
-    translate: (text, lang) => `請翻譯為 ${lang}：${text}`
+    refine: (text, style, lang) => `${t("customize refine prompt", {style: style, lang: lang})} ${text}`,
+    translate: (text, lang) => `${t("customize translate prompt", {lang: lang})} ${text}`
   },
   free: {
-    refine: (text, style) => `用 ${style} 風格修飾以下句子：${text}`,
-    translate: (text, lang) => `請翻譯為 ${lang}：${text}`
+    refine: (text, style, lang) => `${t("free refine prompt", {style: style, lang: lang})} ${text}`,
+    translate: (text, lang) => `${t("free translate prompt", {lang: lang})} ${text}`
   }
 };
 

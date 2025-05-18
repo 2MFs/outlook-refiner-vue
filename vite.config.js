@@ -28,6 +28,8 @@ export default defineConfig({
       "dirs": path.resolve(__dirname, "src/directives"),
       "assets": path.resolve(__dirname, "src/assets"),
       "stores": path.resolve(__dirname, "src/stores"),
+      "locales": path.resolve(__dirname, "src/locales"),
+      "i18n": path.resolve(__dirname, "src/i18n"),
     },
   }
   
