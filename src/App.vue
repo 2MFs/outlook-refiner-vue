@@ -393,7 +393,7 @@ Office.onReady(function (info) {
     return;
   }
 
-  showAlert(`✅ ${t('readeyEventsAlert', { host: info.host, platform: info.platform })}`, 'info');
+  showAlert(`✅ ${t('readyEventsAlert', { host: info.host, platform: info.platform })}`, 'info');
 });
 
 /**
