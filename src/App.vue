@@ -639,9 +639,9 @@ function getSelectedText() {
     () => {
       isTextSelected.value = inputText.value.trim().length > 0
       seTextSelected(isTextSelected.value);
-      showAlert(`✅ ${t("The result has been overwritten on the selected text in the email.")}`, 'success')
+      showAlert(`✅ ${t("Selected text has been loaded.")}`, 'success')
     },
-    () => showAlert(`⚠️ ${t("No result content, cannot be overwritten.")}`, 'warning'),
+    () => showAlert(`⚠️ ${t("No text selected or the selected area is empty.")}`, 'warning'),
     (err) => showAlert(`${err.message}`, 'error')
   );
 
