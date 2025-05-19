@@ -107,15 +107,19 @@
               </label>
             </div>
             <div v-if="tabContent.toLowerCase() == 'gemini'">
-              <div class="flex items-center p-4 mb-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800" role="alert">
-                <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+              <div
+                class="flex items-center p-4 mb-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800"
+                role="alert">
+                <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
                 </svg>
-                <span class="sr-only">{{ $t("Reminders")}}</span>
+                <span class="sr-only">{{ $t("Reminders") }}</span>
                 <div>
-                  <span class="font-medium">{{ $t("Reminder")}}</span> {{ $t("Gemini Reminder") }}
+                  <span class="font-medium">{{ $t("Reminder") }}</span> {{ $t("Gemini Reminder") }}
                 </div>
-              </div>              
+              </div>
             </div>
 
           </div>
@@ -137,8 +141,8 @@
     </div>
 
     <div>
-      <p v-if="isTextSelected" class="text-sm text-green-600">✅ {{ $t("The selected text has been highlighted; please choose the operation for refinement or translation.") }}</p>
-      <p v-else class="text-sm text-red-500">⚠️ {{ $t("Please select text in the email first, as no text has been selected yet.") }}</p>
+      <p v-if="isTextSelected" class="text-sm text-green-600">✅ {{ $t("isTextSelectedText") }}</p>
+      <p v-else class="text-sm text-red-500">⚠️ {{ $t("isTextSelectedYetText") }}</p>
     </div>
 
     <textarea v-model="inputText"
@@ -148,31 +152,30 @@
 
     <div v-if="rtResult" class="p-4 border rounded-lg bg-gray-50">
       <h2 class="text-lg font-semibold text-gray-700 mb-2">🎯 {{ $t("Processing result:") }}</h2>
-      <p id="resultCopy" class="whitespace-pre-line text-gray-800 pb-2">{{ rtResult }}</p>
-      <Spinner />
-      <ClipboardButton
-        target-id="resultCopy"
-        :default-text="t('Copy')"
-        :success-text="t('Copied!')"
-        :use-html-entities="true"
-        content-type="innerHTML"
-        >
+      <div class="whitespace-pre-line text-gray-800 pb-2">
+        <Spinner v-if="isProcessing" />
+        <p id="resultCopy" v-if="!isProcessing">{{ rtResult }}</p>
+      </div>
+      <ClipboardButton target-id="resultCopy" :default-text="t('Copy')" :success-text="t('Copied!')"
+        :use-html-entities="true" content-type="innerHTML">
         <template #default>
           <!-- 自訂 default 圖示與文字 -->
         </template>
         <template #success>
           <!-- 自訂成功後的圖示與文字 -->
         </template>
-      </ClipboardButton>      
-      
+      </ClipboardButton>
+
       <button ref="setSelectedBtn" @click="wrappedSetSelectedText"
         class="cursor-not-allowed text-gray-900 dark:text-gray-400 m-0.5 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg py-2 px-2.5 inline-flex items-center justify-center bg-white border-gray-200 border h-8"
         :disabled="rtResult === ''">
         <span class="inline-flex items-center">
-            <svg class="w-3 h-3 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-width="2" d="M14 4v3a1 1 0 0 1-1 1h-3m4 10v1a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h2m11-3v10a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1V7.87a1 1 0 0 1 .24-.65l2.46-2.87a1 1 0 0 1 .76-.35H18a1 1 0 0 1 1 1Z"/>
-            </svg>
-            
+          <svg class="w-3 h-3 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+            fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-width="2"
+              d="M14 4v3a1 1 0 0 1-1 1h-3m4 10v1a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h2m11-3v10a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1V7.87a1 1 0 0 1 .24-.65l2.46-2.87a1 1 0 0 1 .76-.35H18a1 1 0 0 1 1 1Z" />
+          </svg>
+
           <span class="text-xs font-semibold">{{ $t("Cover email selected text") }}</span>
         </span>
       </button>
@@ -183,8 +186,8 @@
         class="cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg transition disabled:opacity-50"
         :disabled="isTextSelected">
         {{ $t("Select text from the email") }}
-      </button>      
-    
+      </button>
+
       <button ref="clearTextBtn" @click="wrappedSetClearText"
         class="cursor-not-allowed bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition disabled:opacity-50"
         :disabled="!isTextSelected">
@@ -194,7 +197,7 @@
 
     <hr class="w-full h-px bg-gray-200 border-0 dark:bg-gray-700">
 
-    <div class="flex gap-3">      
+    <div class="flex gap-3">
 
       <button ref="actionBtn" @click="wrappedHandleAction"
         class="cursor-not-allowed bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition disabled:opacity-50"
@@ -203,31 +206,38 @@
       </button>
     </div>
 
-    
+
     <div class="flex justify-between items-center">
       <hr class="w-full h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
-      <button @click="showOption = !showOption" type="button" class="w-1/5 cursor-pointer text-sm text-gray-600 hover:text-blue-600">
+      <button @click="showOption = !showOption" type="button"
+        class="w-1/5 cursor-pointer text-sm text-gray-600 hover:text-blue-600">
 
         {{ $t("Options") }}
 
         <span class="absolute mx-1 py-1">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4" v-if="!showOption">
-            <path fill-rule="evenodd" d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z" clip-rule="evenodd" />
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4"
+            v-if="!showOption">
+            <path fill-rule="evenodd"
+              d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z"
+              clip-rule="evenodd" />
           </svg>
 
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4" v-if="showOption">
-            <path fill-rule="evenodd" d="M11.47 7.72a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 1 1-1.06 1.06L12 9.31l-6.97 6.97a.75.75 0 0 1-1.06-1.06l7.5-7.5Z" clip-rule="evenodd" />
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4"
+            v-if="showOption">
+            <path fill-rule="evenodd"
+              d="M11.47 7.72a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 1 1-1.06 1.06L12 9.31l-6.97 6.97a.75.75 0 0 1-1.06-1.06l7.5-7.5Z"
+              clip-rule="evenodd" />
           </svg>
         </span>
-        
+
       </button>
     </div>
-    
+
 
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4" v-if="showOption">
       <div>
         <label class="text-sm font-medium text-gray-700 block mb-1">{{ $t("Operating Mode") }}</label>
-        <select v-model="mode"
+        <select v-model="mode" @change="changeTranslator"
           class="w-full cursor-pointer border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-blue-500">
           <option value="refine">{{ $t("Refine") }}</option>
           <option value="translate">{{ $t("Translation") }}</option>
@@ -283,10 +293,13 @@
 
     <div class="flex justify-between items-center gap-4">
       <div class="py-2 rounded w-auto">
-        <span class="me-3 mb-3 md:mb-0 text-gray-300 font-mono font-semibold rounded-lg text-sm pl-5 py-2.5 text-center inline-flex items-center">© {{ rightsYear }}&nbsp<a href="https://refinerAI.com/" class="hover:text-gray-500">RefinerAI™</a>.</span>
+        <span
+          class="me-3 mb-3 md:mb-0 text-gray-300 font-mono font-semibold rounded-lg text-sm pl-5 py-2.5 text-center inline-flex items-center">©
+          {{ rightsYear }}&nbsp<a href="https://refinerAI.com/" class="hover:text-gray-500">RefinerAI™</a>.</span>
       </div>
       <div class="py-2 rounded w-auto text-center">
-        <span class="me-3 mb-3 md:mb-0 text-gray-300 font-mono font-semibold rounded-lg text-sm py-2.5 text-center inline-flex items-center">1.0.0</span>
+        <span
+          class="me-3 mb-3 md:mb-0 text-gray-300 font-mono font-semibold rounded-lg text-sm py-2.5 text-center inline-flex items-center">1.0.0</span>
       </div>
       <div class="py-2 rounded w-auto text-right ">
         <languageSelectorComponent bgColor="" shadowSize="" ringSize="" ringColor="" ringInset="" ringInsetColor="">
@@ -322,6 +335,12 @@ const providers = tabs.map(t => t.toLowerCase()); // 確保兩邊一致
 const fields = ['url', 'key', 'model', 'default']; // API 設定的欄位名稱
 const keys = providers.flatMap(p => fields.map(f => `${p}_${f}`)); // 生成 localStorage 的 key 名稱，如 openai_url、openai_key、openai_model
 //const envKeys = providers.flatMap(p => fields.map(f => `${p.toUpperCase()}_API_${f.toUpperCase()}`)); // 生成環境變數的 key 名稱，如 VUE_APP_OPENAI_URL、VUE_APP_OPENAI_KEY、VUE_APP_OPENAI_MODEL
+
+const languageGroups = {
+  english: ['en_US', 'en_GB', 'en_CA', 'en_AU', 'en_NZ'],
+  traditionalChinese: ['zh_TW', 'zh_HK', 'zh_MO'],
+  simplifiedChinese: ['zh_CN', 'zh_SG']
+};
 
 const styles = [
   { text: "Formal", value: "formal" },
@@ -424,6 +443,7 @@ const style = ref("formal"); // 潤色風格
 const language = ref("english"); // 翻譯語言
 const mode = ref("refine"); // 操作模式（潤色或翻譯）
 const isTextSelected = ref(false); // 是否有選取文字
+const isProcessing = ref(false);
 const showSettings = ref(false); // 是否顯示設定視窗
 const showPassword = ref(false);
 const showOption = ref(true);
@@ -456,6 +476,11 @@ onMounted(async () => {
   }
 
   loadDefaultProvider();
+
+  const nowLang = localStorage.getItem('lang') || "";
+  const group = getLanguageGroup(nowLang)
+
+  changeLanguage(group);
 
 });
 
@@ -562,7 +587,7 @@ function seTextSelected(isSelected) {
 // 監聽 Button 變更
 function setResulted(isResulted) {
   const buttons = [
-    { el: setSelectedBtn.value, enabled: isResulted && isResulted !="" },
+    { el: setSelectedBtn.value, enabled: isResulted && isResulted != "" },
   ]
 
   buttonStateChange(buttons);
@@ -583,8 +608,8 @@ function handleTextInput() {
   isTextSelected.value = inputText.value.trim().length > 0;
   //變更button狀態
   seTextSelected(isTextSelected.value);
-  
-  if(!isTextSelected.value) rtResult.value = false ;
+
+  if (!isTextSelected.value) rtResult.value = false;
 }
 
 // 清除文字
@@ -596,6 +621,59 @@ function setClearText() {
     //變更button狀態        
     seTextSelected(isTextSelected.value);
     rtResult.value = false;
+  }
+}
+
+function changeTranslator() {
+
+  changeLanguage(getLanguageGroup(localStorage.getItem('lang')), mode.value)
+
+}
+
+function getLanguageGroup(locale) {
+  for (const [group, locales] of Object.entries(languageGroups)) {
+    if (locales.includes(locale)) {
+      return group;
+    }
+  }
+  return 'unknown';
+}
+
+function changeLanguage(group, mode = 'refine') {
+  
+  switch (mode) {
+    case 'refine':
+      switch (group) {
+        case 'english':
+          language.value = "english";
+          break;
+        case 'traditionalChinese':
+          language.value = "traditional chinese";
+          break;
+        case 'simplifiedChinese':
+          language.value = "simplified chinese";
+          break;
+        default:
+          language.value = "english";
+          break;
+      }
+      break;
+    default:
+      switch (group) {
+        case 'english':
+          language.value = "traditional chinese";
+          break;
+        case 'traditionalChinese':
+          language.value = "english";
+          break;
+        case 'simplifiedChinese':
+          language.value = "english";
+          break;
+        default:
+          language.value = "traditional chinese";
+          break;
+      }
+      break;
   }
 }
 
@@ -682,6 +760,7 @@ async function handleAction() {
     return;
   }
 
+  isProcessing.value = true;
   rtResult.value = `⏳ ${t("Processing...")}`;
   try {
     const textToProcess = inputText.value;
@@ -692,11 +771,14 @@ async function handleAction() {
     }
 
     setResulted(rtResult);
+
+    isProcessing.value = false;
   } catch (err) {
     console.error(err);
     rtResult.value = `❌ ${t("An error occurred, please check the API settings or the input content.")}`;
   }
 }
+
 
 </script>
 
