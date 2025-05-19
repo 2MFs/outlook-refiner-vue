@@ -90,13 +90,13 @@ export async function replaceSelectedTextIfAny(newText, onSuccess, onEmpty, onEr
 
 /**
  * 取得選取內容並設至指定輸入元素
- * @param {HTMLElement|string} targetElement - 可接受文字的 DOM 元素或其選擇器
+ * @param {Ref|string|HTMLElement} target - 可為 Vue ref, selector 字串, 或 DOM 元素
  * @param {Function} [onSuccess] - 成功設值後的回呼
  * @param {Function} [onEmpty] - 若無選取內容的回呼
  * @param {Function} [onError] - 錯誤時的回呼
  * @param {Function} [afterAll] - 無論成功與否都會執行的回呼
  */
-export async function fillSelectedTextToElement(targetElement, onSuccess, onEmpty, onError, afterAll) {
+export async function fillSelectedTextToElement(target, onSuccess, onEmpty, onError, afterAll) {
   try {
     const text = await getSelectedText();
 
@@ -105,19 +105,33 @@ export async function fillSelectedTextToElement(targetElement, onSuccess, onEmpt
       return;
     }
 
-    let el = typeof targetElement === 'string'
-      ? document.querySelector(targetElement)
-      : targetElement;
-
-    if (!el || !(el instanceof HTMLElement)) {
-      throw new Error(`❌ ${t('Cannot find the element to copy')}`);
+    // ✅ Vue ref (v-model)
+    if (target && typeof target === 'object' && 'value' in target) {
+      target.value = text;
+      onSuccess?.();
+      return;
     }
 
-    if ('value' in el) {
-      el.value = text;
-    } else {
-      el.textContent = text;
+    // ✅ Selector string
+    if (typeof target === 'string') {
+      const el = document.querySelector(target);
+      if (el) {
+        applyTextToElement(el, text);
+        onSuccess?.();
+      } else {
+        throw new Error(`無法找到元素：${target}`);
+      }
+      return;
     }
+
+    // ✅ DOM Element 物件
+    if (target instanceof HTMLElement) {
+      applyTextToElement(target, text);
+      onSuccess?.();
+      return;
+    }
+
+    throw new Error('無效的 target 類型');
 
     onSuccess?.(text, el);
   } catch (error) {

@@ -456,7 +456,7 @@ onMounted(async () => {
   }
 
   loadDefaultProvider();
-  
+
 });
 
 // 監聽office.js 事件
@@ -635,8 +635,8 @@ async function setSelectedText() {
 function getSelectedText() {
 
   fillSelectedTextToElement(
-    inputText.value,
-    (text) => {
+    inputText,
+    () => {
       isTextSelected.value = text.trim().length > 0
       seTextSelected(isTextSelected.value);
       showAlert(`✅ ${t("The result has been overwritten on the selected text in the email.")}`, 'success')
