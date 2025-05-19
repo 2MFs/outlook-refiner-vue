@@ -6,7 +6,7 @@ const { t } = i18n.global;
  */
 function isOutlookReady() {
   return typeof Office !== 'undefined' &&
-         Office.context?.mailbox?.item?.body != null;
+    Office.context?.mailbox?.item != null;
 }
 
 /**
@@ -19,16 +19,20 @@ export async function getSelectedText() {
       return reject(new Error(`⚠️ ${t("Outlook add-ins has not finished loading yet.")}`));
     }
 
-    Office.context.mailbox.item.body.getSelectedDataAsync(
-      Office.CoercionType.Text,
-      (result) => {
-        if (result.status === Office.AsyncResultStatus.Succeeded) {
-          resolve(result.value?.data?.trim() || '');
-        } else {
-          reject(result.error || new Error(`❌ ${t("No text selected or the selected area is empty.")}`));
+    if (Office.context?.mailbox?.item?.getSelectedDataAsync) {
+      Office.context.mailbox.item.getSelectedDataAsync(
+        Office.CoercionType.Text,
+        (result) => {
+          if (result.status === Office.AsyncResultStatus.Succeeded) {
+            resolve(result.value?.data?.trim() || '');
+          } else {
+            reject(result.error || new Error(`❌ ${t("No text selected or the selected area is empty.")}`));
+          }
         }
-      }
-    );
+      );
+    } else {
+      return reject(new Error(`⚠️ ${t("Unable to use the selection feature. Please check the Outlook add-in environment.")}`));
+    }
   });
 }
 
@@ -43,17 +47,21 @@ export async function replaceSelectedText(newText) {
       return reject(new Error(`❌ ${t("No text selected or the selected area is empty.")}`));
     }
 
-    Office.context.mailbox.item.body.setSelectedDataAsync(
-      newText,
-      { coercionType: Office.CoercionType.Text },
-      (result) => {
-        if (result.status === Office.AsyncResultStatus.Succeeded) {
-          resolve(true);
-        } else {
-          reject(result.error || new Error(`❌ ${t("Unable to overwrite selected text in the email.")}`));
+    if (Office.context?.mailbox?.item?.setSelectedDataAsync) {
+      Office.context.mailbox.item.setSelectedDataAsync(
+        newText,
+        { coercionType: Office.CoercionType.Text },
+        (result) => {
+          if (result.status === Office.AsyncResultStatus.Succeeded) {
+            resolve(true);
+          } else {
+            reject(result.error || new Error(`❌ ${t("Unable to overwrite selected text in the email.")}`));
+          }
         }
-      }
-    );
+      );
+    } else {
+      return reject(new Error(`⚠️ ${t("Unable to use the overwrite feature. Please check the Outlook add-in environment.")}`));
+    }
   });
 }
 
