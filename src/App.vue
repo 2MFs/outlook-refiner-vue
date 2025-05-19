@@ -637,7 +637,7 @@ function getSelectedText() {
   fillSelectedTextToElement(
     inputText,
     () => {
-      isTextSelected.value = text.trim().length > 0
+      isTextSelected.value = inputText.trim().length > 0
       seTextSelected(isTextSelected.value);
       showAlert(`✅ ${t("The result has been overwritten on the selected text in the email.")}`, 'success')
     },
