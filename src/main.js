@@ -11,12 +11,14 @@ onMounted(() => {
 })
 
 import languageSelectorComponent from "./components/LanguageSelector.vue";
+import CopyButton from './components/CopyButton.vue';
 
 Office.onReady(() => {
     const app = createApp(App);
     const pinia = createPinia();
 
     app.component('languageSelectorComponent', languageSelectorComponent)
+    app.component('CopyButton', CopyButton)
     
     app.use(pinia);
     app.use(i18n);

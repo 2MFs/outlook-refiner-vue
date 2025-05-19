@@ -131,7 +131,14 @@
 
     <div v-if="rtResult" class="p-4 border rounded-lg bg-gray-50">
       <h2 class="text-lg font-semibold text-gray-700 mb-2">🎯 {{ $t("Processing result:") }}</h2>
-      <p class="whitespace-pre-line text-gray-800">{{ rtResult }}</p>
+      <p id="resultCopy" class="whitespace-pre-line text-gray-800">{{ rtResult }}</p>
+      <CopyButton target="#resultCopy"/>
+      
+      <button ref="setSelectedBtn" @click="wrappedSetSelectedText"
+        class="cursor-not-allowed bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg transition disabled:opacity-50"
+        :disabled="rtResult === ''">
+        {{ $t("Cover email selected text") }}
+      </button>
     </div>
 
     <div class="flex gap-3">
@@ -139,19 +146,18 @@
         class="cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg transition disabled:opacity-50"
         :disabled="isTextSelected">
         {{ $t("Select text from the email") }}
-      </button>
-
-      <button ref="setSelectedBtn" @click="wrappedSetSelectedText"
-        class="cursor-not-allowed bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg transition disabled:opacity-50"
-        :disabled="!isTextSelected">
-        {{ $t("Cover email selected text") }}
-      </button>
-
+      </button>      
+    
       <button ref="clearTextBtn" @click="wrappedSetClearText"
         class="cursor-not-allowed bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition disabled:opacity-50"
         :disabled="!isTextSelected">
         {{ $t("Clear") }}
       </button>
+    </div>
+
+    <hr class="w-full h-px bg-gray-200 border-0 dark:bg-gray-700">
+
+    <div class="flex gap-3">      
 
       <button ref="actionBtn" @click="wrappedHandleAction"
         class="cursor-not-allowed bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition disabled:opacity-50"
@@ -160,7 +166,28 @@
       </button>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    
+    <div class="flex justify-between items-center">
+      <hr class="w-full h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
+      <button @click="showOption = !showOption" type="button" class="w-1/5 cursor-pointer text-sm text-gray-600 hover:text-blue-600">
+
+        {{ $t("Options") }}
+
+        <span class="absolute mx-1 py-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4" v-if="!showOption">
+            <path fill-rule="evenodd" d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z" clip-rule="evenodd" />
+          </svg>
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4" v-if="showOption">
+            <path fill-rule="evenodd" d="M11.47 7.72a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 1 1-1.06 1.06L12 9.31l-6.97 6.97a.75.75 0 0 1-1.06-1.06l7.5-7.5Z" clip-rule="evenodd" />
+          </svg>
+        </span>
+        
+      </button>
+    </div>
+    
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4" v-if="showOption">
       <div>
         <label class="text-sm font-medium text-gray-700 block mb-1">{{ $t("Operating Mode") }}</label>
         <select v-model="mode"
@@ -217,11 +244,14 @@
   </div>
   <div class=" max-w-2xl mx-auto space-y-6">
 
-    <div class="flex justify-between items-center gap-4">         
-      <div class="py-4 rounded w-1 ">
-        <div class="text-gray-300 text-center font-mono me-3 mb-3 md:mb-0 px-5 py-2.5">1.0.0</div>
+    <div class="flex justify-between items-center gap-4">
+      <div class="py-2 rounded w-auto">
+        <span class="me-3 mb-3 md:mb-0 text-gray-300 font-mono font-semibold rounded-lg text-sm pl-5 py-2.5 text-center inline-flex items-center">© {{ rightsYear }}&nbsp<a href="https://refinerAI.com/" class="hover:text-gray-500">RefinerAI™</a>.</span>
       </div>
-      <div class="py-4 rounded w-1/2 text-right ">
+      <div class="py-2 rounded w-auto text-center">
+        <span class="me-3 mb-3 md:mb-0 text-gray-300 font-mono font-semibold rounded-lg text-sm py-2.5 text-center inline-flex items-center">1.0.0</span>
+      </div>
+      <div class="py-2 rounded w-auto text-right ">
         <languageSelectorComponent bgColor="" shadowSize="" ringSize="" ringColor="" ringInset="" ringInsetColor="">
         </languageSelectorComponent>
       </div>
@@ -343,6 +373,7 @@ const alertMessage = ref("");
 const alertType = ref("info"); // success | error | info
 
 //預設值
+const rightsYear = new Date().getFullYear();
 const defaultProvider = ref('free');
 const activeTab = ref('OpenAI') // 把 tab 名稱轉成 settings 的 key prefix（如 openai_url） const activeKey = computed(() => activeTab.value.toLowerCase())
 const inputText = ref(""); // 使用者輸入的文字
@@ -352,11 +383,12 @@ const language = ref("english"); // 翻譯語言
 const mode = ref("refine"); // 操作模式（潤色或翻譯）
 const isTextSelected = ref(false); // 是否有選取文字
 const showSettings = ref(false); // 是否顯示設定視窗
+const showPassword = ref(false);
+const showOption = ref(true);
 const getSelectedBtn = ref(null)
 const setSelectedBtn = ref(null)
 const clearTextBtn = ref(null)
 const actionBtn = ref(null)
-const showPassword = ref(false);
 
 // 綁定事件時使用包裝後的版本
 const wrappedGetSelectedText = withHideSettings(getSelectedText);
@@ -485,11 +517,23 @@ function saveSettings() {
 function seTextSelected(isSelected) {
   const buttons = [
     { el: getSelectedBtn.value, enabled: !isSelected },
-    { el: setSelectedBtn.value, enabled: isSelected },
     { el: clearTextBtn.value, enabled: isSelected },
     { el: actionBtn.value, enabled: isSelected },
   ]
 
+  buttonStateChange(buttons);
+}
+
+// 監聽 Button 變更
+function setResulted(isResulted) {
+  const buttons = [
+    { el: setSelectedBtn.value, enabled: isResulted && isResulted !="" },
+  ]
+
+  buttonStateChange(buttons);
+}
+
+function buttonStateChange(buttons) {
   buttons.forEach(({ el, enabled }) => {
     if (!el) return
     el.disabled = !enabled
@@ -498,11 +542,14 @@ function seTextSelected(isSelected) {
   })
 }
 
+
 // 監聽文字輸入
 function handleTextInput() {
   isTextSelected.value = inputText.value.trim().length > 0;
   //變更button狀態
   seTextSelected(isTextSelected.value);
+  
+  if(!isTextSelected.value) rtResult.value = false ;
 }
 
 // 清除文字
@@ -513,6 +560,7 @@ function setClearText() {
 
     //變更button狀態        
     seTextSelected(isTextSelected.value);
+    rtResult.value = false;
   }
 }
 
@@ -523,34 +571,42 @@ function setSelectedText() {
     return;
   }
 
-  if (Office.context?.mailbox?.item?.setSelectedDataAsync) {
-    Office.context.mailbox.item.setSelectedDataAsync(rtResult.value, function (result) {
-      if (result.status === Office.AsyncResultStatus.Succeeded) {
-        showAlert(`✅ ${t("The result has been overwritten on the selected text in the email.")}`, "success");
-      } else {
-        showAlert(`❌ ${t("Unable to overwrite selected text in the email.")}`, "error");
-      }
-    });
+  if (rtResult.value) {
+    if (Office.context?.mailbox?.item?.setSelectedDataAsync) {
+      Office.context.mailbox.item.setSelectedDataAsync(rtResult.value, function (result) {
+        if (result.status === Office.AsyncResultStatus.Succeeded) {
+          showAlert(`✅ ${t("The result has been overwritten on the selected text in the email.")}`, "success");
+        } else {
+          showAlert(`❌ ${t("Unable to overwrite selected text in the email.")}`, "error");
+        }
+      });
+    } else {
+      showAlert(`⚠️ ${t("Unable to use the overwrite feature. Please check the Outlook add-in environment.")}`, "error");
+    }
   } else {
-    showAlert(`⚠️ ${t("Unable to use the overwrite feature. Please check the Outlook add-in environment.")}`, "error");
+    showAlert(`⚠️ ${t("No result content, cannot be overwritten.")}`, "error");
   }
 }
 
 // 取得郵件選取文字
 function getSelectedText() {
   if (!Office.context?.mailbox?.item) {
-    showAlert(`⚠️ ${t("The Outlook add-in has not finished loading.")}`, "error");
+    showAlert(`⚠️ ${t("Outlook add-ins has not finished loading yet.")}`, "error");
     return;
   }
 
   if (Office.context?.mailbox?.item?.getSelectedDataAsync) {
     Office.context.mailbox.item.getSelectedDataAsync(Office.CoercionType.Text, function (result) {
       if (result.status === Office.AsyncResultStatus.Succeeded) {
-        inputText.value = result.value.data;
-        isTextSelected.value = inputText.value.trim().length > 0;
-        //變更button狀態
-        seTextSelected(isTextSelected.value);
-        showAlert(`✅ ${t("Selected text has been loaded.")}`, "success");
+        if (result.status) {
+          inputText.value = result.value.data;
+          isTextSelected.value = inputText.value.trim().length > 0;
+          //變更button狀態
+          seTextSelected(isTextSelected.value);
+          showAlert(`✅ ${t("Selected text has been loaded.")}`, "success");
+        } else {
+          showAlert(`❌ ${t("No text selected or the selected area is empty.")}`, "error");
+        }
       } else {
         showAlert(`❌ ${t("Unable to retrieve the selected text.")}`, "error");
       }
@@ -575,6 +631,8 @@ async function handleAction() {
     } else if (mode.value === "translate") {
       rtResult.value = await translateText(providersList, defaultProvider.value, textToProcess, language.value);
     }
+
+    setResulted(rtResult);
   } catch (err) {
     console.error(err);
     rtResult.value = `❌ ${t("An error occurred, please check the API settings or the input content.")}`;
