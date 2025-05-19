@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const isOpen = ref(false)
@@ -48,6 +48,18 @@ const switchLang = (lang) => {
 
 const currentLabel = computed(() => languages[locale.value]?.label || 'Language')
 const currentFlag = computed(() => languages[locale.value]?.flag || '🌐')
+
+onMounted (() =>{
+
+  const dropdownToggleEl = document.getElementById('dropdownTopButton')
+  const dropdownMenuEl = document.getElementById('dropdownTop')
+
+  if (dropdownToggleEl && dropdownMenuEl) {
+    const dropdown = new Dropdown(dropdownMenuEl, dropdownToggleEl)
+    // 可選設定：dropdown.show(), dropdown.hide()
+  }
+
+})
 
 </script>
 

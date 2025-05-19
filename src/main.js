@@ -11,14 +11,22 @@ onMounted(() => {
 })
 
 import languageSelectorComponent from "./components/LanguageSelector.vue";
+import ClipboardButton from './components/ClipboardButton.vue';
 import CopyButton from './components/CopyButton.vue';
+import AlertDisplay from './components/AlertDisplay.vue';
+import Spinner from './components/Spinner.vue';
+import Declaration from './components/Declaration.vue';
 
 Office.onReady(() => {
     const app = createApp(App);
     const pinia = createPinia();
 
     app.component('languageSelectorComponent', languageSelectorComponent)
-    app.component('CopyButton', CopyButton)
+    app.component('ClipboardButton', ClipboardButton)
+    app.component('CopyButton', CopyButton)    
+    app.component('AlertDisplay', AlertDisplay)
+    app.component('Spinner', Spinner)
+    app.component('Declaration', Declaration)
     
     app.use(pinia);
     app.use(i18n);

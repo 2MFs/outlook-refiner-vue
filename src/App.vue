@@ -8,7 +8,10 @@
       </button>
     </div>
 
+    <Declaration />
+
     <!-- Alert 提示 -->
+    <!--
     <div v-if="alertMessage" :class="[
       'rounded-lg p-3 border text-sm relative',
       alertType === 'success' ? 'bg-green-100 text-green-800 border-green-300' :
@@ -20,6 +23,8 @@
         :class="[alertType === 'success' ? 'text-green-800' : alertType === 'error' ? 'text-red-800' : 'text-blue-800']"
         class="cursor-pointer absolute top-3.5 end-2.5 text-xs hover:text-gray-800">✖</button>
     </div>
+    -->
+    <AlertDisplay />
 
     <div v-if="showSettings" class="p-6 bg-gray-50 border border-gray-200 rounded-xl space-y-6">
       <h2 class="text-xl font-semibold text-gray-800">{{ $t("API Settings") }}</h2>
@@ -101,6 +106,18 @@
                 <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $t("Default AI") }} </span>
               </label>
             </div>
+            <div v-if="tabContent.toLowerCase() == 'gemini'">
+              <div class="flex items-center p-4 mb-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800" role="alert">
+                <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                </svg>
+                <span class="sr-only">{{ $t("Reminders")}}</span>
+                <div>
+                  <span class="font-medium">{{ $t("Reminder")}}</span> {{ $t("Gemini Reminder") }}
+                </div>
+              </div>              
+            </div>
+
           </div>
         </template>
       </div>
@@ -131,13 +148,33 @@
 
     <div v-if="rtResult" class="p-4 border rounded-lg bg-gray-50">
       <h2 class="text-lg font-semibold text-gray-700 mb-2">🎯 {{ $t("Processing result:") }}</h2>
-      <p id="resultCopy" class="whitespace-pre-line text-gray-800">{{ rtResult }}</p>
-      <CopyButton target="#resultCopy"/>
+      <p id="resultCopy" class="whitespace-pre-line text-gray-800 pb-2">{{ rtResult }}</p>
+      <Spinner />
+      <ClipboardButton
+        target-id="resultCopy"
+        :default-text="t('Copy')"
+        :success-text="t('Copied!')"
+        :use-html-entities="true"
+        content-type="innerHTML"
+        >
+        <template #default>
+          <!-- 自訂 default 圖示與文字 -->
+        </template>
+        <template #success>
+          <!-- 自訂成功後的圖示與文字 -->
+        </template>
+      </ClipboardButton>      
       
       <button ref="setSelectedBtn" @click="wrappedSetSelectedText"
-        class="cursor-not-allowed bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg transition disabled:opacity-50"
+        class="cursor-not-allowed text-gray-900 dark:text-gray-400 m-0.5 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg py-2 px-2.5 inline-flex items-center justify-center bg-white border-gray-200 border h-8"
         :disabled="rtResult === ''">
-        {{ $t("Cover email selected text") }}
+        <span class="inline-flex items-center">
+            <svg class="w-3 h-3 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-width="2" d="M14 4v3a1 1 0 0 1-1 1h-3m4 10v1a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h2m11-3v10a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1V7.87a1 1 0 0 1 .24-.65l2.46-2.87a1 1 0 0 1 .76-.35H18a1 1 0 0 1 1 1Z"/>
+            </svg>
+            
+          <span class="text-xs font-semibold">{{ $t("Cover email selected text") }}</span>
+        </span>
       </button>
     </div>
 
@@ -268,6 +305,11 @@ import { useProviders } from 'apis/providers';
 import { refineText, translateText } from "utils/aiClient";
 import { useI18n } from 'vue-i18n'
 
+import { replaceSelectedTextIfAny, fillSelectedTextToElement } from 'utils/outlookUtils';
+import { showAlert } from 'utils/alerts';
+import Spinner from "./components/Spinner.vue";
+import Declaration from "./components/Declaration.vue";
+
 /**
  *  初始區塊
  */
@@ -370,7 +412,7 @@ const languages = [
 
 // alert 狀態
 const alertMessage = ref("");
-const alertType = ref("info"); // success | error | info
+//const alertType = ref("info"); // success | error | info
 
 //預設值
 const rightsYear = new Date().getFullYear();
@@ -414,15 +456,7 @@ onMounted(async () => {
   }
 
   loadDefaultProvider();
-
-  const dropdownToggleEl = document.getElementById('dropdownTopButton')
-  const dropdownMenuEl = document.getElementById('dropdownTop')
-
-  if (dropdownToggleEl && dropdownMenuEl) {
-    const dropdown = new Dropdown(dropdownMenuEl, dropdownToggleEl)
-    // 可選設定：dropdown.show(), dropdown.hide()
-  }
-
+  
 });
 
 // 監聽office.js 事件
@@ -463,13 +497,14 @@ function togglePassword() {
 }
 
 // 顯示 alert
+/*
 function showAlert(message, type = "info") {
   alertMessage.value = message;
   alertType.value = type;
   setTimeout(() => {
     alertMessage.value = "";
   }, 3000);
-}
+}*/
 
 // 清除 alert
 function clearAlert() {
@@ -565,7 +600,14 @@ function setClearText() {
 }
 
 // 覆蓋郵件選取文字
-function setSelectedText() {
+async function setSelectedText() {
+  await replaceSelectedTextIfAny(
+    rtResult.value,
+    () => showAlert(`✅ ${t("The result has been overwritten on the selected text in the email.")}`, 'success'),
+    () => showAlert(`⚠️ ${t("No result content, cannot be overwritten.")}`, 'warning'),
+    (err) => showAlert(`${err.message}`, 'error')
+  );
+  /*
   if (!Office.context?.mailbox?.item) {
     showAlert(`⚠️ ${t("Outlook add-ins has not finished loading yet.")}`, "error");
     return;
@@ -577,7 +619,7 @@ function setSelectedText() {
         if (result.status === Office.AsyncResultStatus.Succeeded) {
           showAlert(`✅ ${t("The result has been overwritten on the selected text in the email.")}`, "success");
         } else {
-          showAlert(`❌ ${t("Unable to overwrite selected text in the email.")}`, "error");
+          showAlert(`❌ ${t("Unable to overwrite selected text in the email：${err.message}")}`, "error");
         }
       });
     } else {
@@ -585,11 +627,25 @@ function setSelectedText() {
     }
   } else {
     showAlert(`⚠️ ${t("No result content, cannot be overwritten.")}`, "error");
-  }
+  }*/
+
 }
 
 // 取得郵件選取文字
 function getSelectedText() {
+
+  fillSelectedTextToElement(
+    inputText.value,
+    (text) => {
+      isTextSelected.value = text.trim().length > 0
+      seTextSelected(isTextSelected.value);
+      showAlert(`✅ ${t("The result has been overwritten on the selected text in the email.")}`, 'success')
+    },
+    () => showAlert(`⚠️ ${t("No result content, cannot be overwritten.")}`, 'warning'),
+    (err) => showAlert(`${err.message}`, 'error')
+  );
+
+  /*
   if (!Office.context?.mailbox?.item) {
     showAlert(`⚠️ ${t("Outlook add-ins has not finished loading yet.")}`, "error");
     return;
@@ -598,8 +654,10 @@ function getSelectedText() {
   if (Office.context?.mailbox?.item?.getSelectedDataAsync) {
     Office.context.mailbox.item.getSelectedDataAsync(Office.CoercionType.Text, function (result) {
       if (result.status === Office.AsyncResultStatus.Succeeded) {
-        if (result.status) {
-          inputText.value = result.value.data;
+        const selectedText = result.value.data.trim();
+
+        if (selectedText) {
+          inputText.value = selectedText;
           isTextSelected.value = inputText.value.trim().length > 0;
           //變更button狀態
           seTextSelected(isTextSelected.value);
@@ -614,6 +672,7 @@ function getSelectedText() {
   } else {
     showAlert(`⚠️ ${t("Unable to use the selection feature. Please check the Outlook add-in environment.")}`, "error");
   }
+  */
 }
 
 // 處理文字
