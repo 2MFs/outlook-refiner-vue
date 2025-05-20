@@ -1,5 +1,5 @@
 <template>
-    <div v-if="isDeclaration" id="alert-additional-content-1"
+    <div v-if="isDeclaration"
         class="p-4 mb-4 text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800"
         role="alert">
         <div class="flex items-center">
@@ -21,9 +21,14 @@
         </div>
         <div class="flex">
 
-            <button id="alert-additional-content-button" type="button"
-                class="cursor-pointer text-white bg-green-800 hover:bg-green-900 font-medium rounded-lg text-xs px-3 py-1.5 me-2 text-center inline-flex items-center dark:bg-green-600 dark:hover:bg-green-700"
-                aria-label="Close">
+            <button @click="declarationDismiss" type="button"
+                class="cursor-pointer text-white bg-green-800 hover:bg-green-900 font-medium rounded-lg text-xs px-3 py-1.5 me-2 text-center inline-flex items-center dark:bg-green-600 dark:hover:bg-green-700">
+                <svg class="me-1 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+
                 {{ $t('Agree') }}
             </button>
         </div>
@@ -33,49 +38,25 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { Dismiss } from 'flowbite';
 
+const dismiss = ref(null);
 const isDeclaration = ref(false);
-
-// options object
-const options = {
-    transition: 'transition-opacity',
-    duration: 500,
-    timing: 'ease-out',
-
-    // callback functions
-    onHide: (context, targetEl) => {
-        //console.log('element has been dismissed')
-        //console.log(targetEl)
-        isDeclaration.value = false;
-        localStorage.setItem('declaration', true)
-    }
-};
-
-// instance options object
-const instanceOptions = {
-    id: 'alert-additional-content-button',
-    override: true
-};
-
 onMounted(() => {
-
-    const declaration = localStorage.getItem("declaration");
+    
+    const declaration = localStorage.getItem("declaration") || false;
 
     if (!declaration) {
         isDeclaration.value = true;
     }
 
-    // target element that will be dismissed
-    const $targetEl = document.getElementById('alert-additional-content-1');
-
-    // optional trigger element
-    const $triggerEl = document.getElementById('alert-additional-content-button');
-
-    const dismiss = new Dismiss($targetEl, $triggerEl, options, instanceOptions);
-
-
-
 })
+
+function declarationDismiss() {
+    //console.log('element has been dismissed')
+
+    isDeclaration.value = false;
+    localStorage.setItem('declaration', true)
+    //dismiss.hide();
+}
 
 </script>

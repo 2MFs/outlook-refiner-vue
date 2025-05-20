@@ -65,7 +65,7 @@
                 class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder="" />
               <button type="button"
-                class="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600 dark:text-gray-300"
+                class="cursor-pointer absolute inset-y-0 right-0 flex items-center px-3 text-gray-600 dark:text-gray-300"
                 @click="togglePassword">
                 <svg v-if="!showPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor" class="w-5 h-5">
@@ -467,6 +467,7 @@ const settings = ref(
  * 初始化階段
  */
 onMounted(async () => {
+
   const configStore = useConfigStore();
   //loadConfig();
   await configStore.loadConfig(); // 載入設定
