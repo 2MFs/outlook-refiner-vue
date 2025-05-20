@@ -161,6 +161,7 @@ export async function fillSelectedTextToElement(target, onSuccess, onEmpty, onEr
   try {
     const text = ref(null);
     const mode = await getModeContent();
+    console.log(mode);
     switch (mode) {
       case 'read':
         text = await getReadSelectedText();
@@ -170,7 +171,7 @@ export async function fillSelectedTextToElement(target, onSuccess, onEmpty, onEr
       default:
         text = null;
     }
-    
+
     if (!text) {
       onEmpty?.();
       return;

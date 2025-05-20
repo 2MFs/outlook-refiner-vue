@@ -213,7 +213,7 @@
     <div class="flex justify-between items-center">
       <hr class="w-full h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
       <button @click="showOption = !showOption" type="button"
-        class="w-1/5 cursor-pointer text-sm text-gray-600 hover:text-blue-600">
+        class="w-1/4 md:w-1/5 cursor-pointer text-sm text-gray-600 hover:text-blue-600">
 
         {{ $t("Options") }}
 
@@ -294,17 +294,17 @@
   </div>
   <div class=" max-w-2xl mx-auto space-y-6">
 
-    <div class="flex justify-between items-center gap-4">
-      <div class="py-2 rounded w-auto">
+    <div class="flex-none md:flex justify-normal md:justify-between items-stretch md:items-center gap-1 md:gap-4">
+      <div class="py-1 md:py-2 rounded w-auto text-center md:text-left">
         <span
-          class="me-3 mb-3 md:mb-0 text-gray-300 font-mono font-semibold rounded-lg text-sm pl-5 py-2.5 text-center inline-flex items-center">©
+          class="me-3 mb-1 md:mb-0 text-gray-300 font-mono font-semibold rounded-lg text-sm pl-5 py-1 md:py-2.5 text-center inline-flex items-center">©
           {{ rightsYear }}&nbsp<a href="https://refinerAI.com/" class="hover:text-gray-500">RefinerAI™</a>.</span>
       </div>
-      <div class="py-2 rounded w-auto text-center">
+      <div class="py-0 md:py-2 rounded w-auto text-center">
         <span
-          class="me-3 mb-3 md:mb-0 text-gray-300 font-mono font-semibold rounded-lg text-sm py-2.5 text-center inline-flex items-center">1.0.0</span>
+          class="me-3 mb-1 md:mb-0 text-gray-300 font-mono font-semibold rounded-lg text-sm py-1 md:py-2.5 text-center inline-flex items-center">1.0.0</span>
       </div>
-      <div class="py-2 rounded w-auto text-right ">
+      <div class="py-0 md:py-2 rounded w-auto text-center md:text-right ">
         <languageSelectorComponent bgColor="" shadowSize="" ringSize="" ringColor="" ringInset="" ringInsetColor="">
         </languageSelectorComponent>
       </div>
