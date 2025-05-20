@@ -23,21 +23,21 @@ export async function getModeContent() {
     if (Office.context?.mailbox?.item?.itemType === Office.MailboxEnums?.ItemType?.Message) {
       if (Office.context?.mailbox?.item?.body && typeof Office.context?.mailbox?.item?.body?.setAsync === 'function') {
         mode.value = 'compose'
-       
-      } else  {
+
+      } else {
         mode.value = 'read'
-       
+
       }
 
     } else {
       mode.value = 'unKnown';
     }
 
-    if (mode.value && mode.value != 'unKnown'){
-      resolve (mode.value);
-    } else{
-      reject (mode.value);
-    }   
+    if (mode.value && mode.value != 'unKnown') {
+      resolve(mode.value);
+    } else {
+      reject(mode.value);
+    }
 
   });
 }
@@ -56,10 +56,12 @@ export async function getReadSelectedText() {
       Office.context.mailbox.item.body.getAsync('html', (result) => {
         if (result.status === Office.AsyncResultStatus.Succeeded) {
           const selection = result.value.match(/<span class="ms-Text-selection">(.*?)<\/span>/)
-          if (selection || selection[1]){
-            resolve (selection ?? selection[1]);
-          }
+          if (selection || selection[1]) {
+            resolve(selection ?? selection[1]);
+          } else {
             reject(result.error || new Error(`❌ ${t("No text selected or the selected area is empty.")}`));
+          }
+
         } else {
           reject(result.error || new Error(`❌ ${t("No text selected or the selected area is empty.")}`));
         }
@@ -159,10 +161,10 @@ export async function replaceSelectedTextIfAny(newText, onSuccess, onEmpty, onEr
  */
 export async function fillSelectedTextToElement(target, onSuccess, onEmpty, onError, afterAll) {
   try {
-    
+
     const mode = await getModeContent();
 
-    const text = mode == "compose" ? await getSelectedText() : await getReadSelectedText() ;    
+    const text = mode == "compose" ? await getSelectedText() : await getReadSelectedText();
 
     if (!text) {
       onEmpty?.();
