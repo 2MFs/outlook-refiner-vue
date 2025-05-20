@@ -43,7 +43,7 @@ export async function getModeContent() {
 }
 
 /**
- * 讀取模式:取得目前選取的文字內容
+ * 閱讀模式:取得目前選取的文字內容
  */
 export async function getReadSelectedText() {
   return new Promise((resolve, reject) => {
@@ -53,7 +53,7 @@ export async function getReadSelectedText() {
 
     if (Office.context?.mailbox?.item?.body?.getAsync) {
       // 獲取選取的文字
-      Office.context.mailbox.item.body.getAsync('html', (result) => {
+      Office.context.mailbox.item.body.getAsync(Office.CoercionType.Text, (result) => {
         if (result.status === Office.AsyncResultStatus.Succeeded) {
           resolve(result.value.trim());
         } else {
