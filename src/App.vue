@@ -326,6 +326,7 @@ import { replaceSelectedTextIfAny, fillSelectedTextToElement } from 'utils/outlo
 import { showAlert } from 'utils/alerts';
 import Spinner from "./components/Spinner.vue";
 import Declaration from "./components/Declaration.vue";
+import { getModeContent } from "./utils/outlookUtils";
 
 /**
  *  初始區塊
@@ -446,6 +447,7 @@ const rtResult = ref(""); // API 回傳的結果
 const style = ref("formal"); // 潤色風格
 const language = ref("english"); // 翻譯語言
 const mode = ref("refine"); // 操作模式（潤色或翻譯）
+const outlookMode = ref(null);
 const isTextSelected = ref(false); // 是否有選取文字
 const isProcessing = ref(false);
 const showSettings = ref(false); // 是否顯示設定視窗
@@ -481,6 +483,10 @@ onMounted(async () => {
   }
 
   loadDefaultProvider();
+
+  outlookMode.value = getModeContent();
+  mode.value = outlookMode.value == 'read' ? 'translate' : 'refine';
+
 
   const savedLang = localStorage.getItem('lang') || locale.value
   const group = getLanguageGroup(savedLang)

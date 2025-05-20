@@ -1,6 +1,8 @@
 // src/utils/outlookUtils.js
 import i18n from 'i18n'
+import { ref } from 'vue';
 const { t } = i18n.global;
+const mode = ref('');
 /**
  * 確保 Outlook 增益集已就緒
  */
@@ -10,7 +12,66 @@ function isOutlookReady() {
 }
 
 /**
- * 取得目前選取的文字內容
+ * 獲取 Outlook 當前模式
+ */
+export async function getModeContent() {
+  return new Promise((resolve, reject) => {
+    if (!isOutlookReady()) {
+      return reject(new Error(`⚠️ ${t("Outlook add-ins has not finished loading yet.")}`));
+    }
+
+    if (Office.context?.mailbox?.item?.itemType === Office.MailboxEnums?.ItemType?.Message) {
+      if (Office.context?.mailbox?.item?.body && typeof Office.context?.mailbox?.item?.body?.getAsync === 'function') {
+        mode.value = 'read'
+       
+      } else if (Office.context?.mailbox?.item?.body && typeof Office.context?.mailbox?.item?.body?.setAsync === 'function') {
+        mode.value = 'compose'
+       
+      }
+
+    } else {
+      mode.value = 'unKnown';
+    }
+
+    if (mode.value && mode.value != 'unKnown'){
+      resolve (mode.value);
+    } else{
+      reject (mode.value);
+    }   
+
+  });
+}
+
+/**
+ * 讀取模式:取得目前選取的文字內容
+ */
+export async function getReadSelectedText() {
+  return new Promise((resolve, reject) => {
+    if (!isOutlookReady()) {
+      return reject(new Error(`⚠️ ${t("Outlook add-ins has not finished loading yet.")}`));
+    }
+
+    if (Office.context?.mailbox?.item?.body?.getAsync) {
+      // 獲取選取的文字
+      Office.context.mailbox.item.body.getAsync('html', (result) => {
+        if (result.status === Office.AsyncResultStatus.Succeeded) {
+          const selection = result.value.match(/<span class="ms-Text-selection">(.*?)<\/span>/)
+          if (selection || selection[1]){
+            resolve (selection ?? selection[1]);
+          }
+            reject(result.error || new Error(`❌ ${t("No text selected or the selected area is empty.")}`));
+        } else {
+          reject(result.error || new Error(`❌ ${t("No text selected or the selected area is empty.")}`));
+        }
+      })
+    } else {
+      return reject(new Error(`⚠️ ${t("Unable to use the selection feature. Please check the Outlook add-in environment.")}`));
+    }
+  });
+}
+
+/**
+ * 撰寫模式:取得目前選取的文字內容
  * @returns {Promise<string>} - 若沒有選取內容，則回傳空字串
  */
 export async function getSelectedText() {
@@ -37,7 +98,7 @@ export async function getSelectedText() {
 }
 
 /**
- * 替換目前選取的文字（僅在有選取時執行）
+ * 撰寫模式:替換目前選取的文字（僅在有選取時執行）
  * @param {string} newText - 要替換成的內容
  * @returns {Promise<boolean>} - 是否成功替換
  */
@@ -66,7 +127,7 @@ export async function replaceSelectedText(newText) {
 }
 
 /**
- * 若有選取文字，則執行替換；否則觸發回呼
+ * 撰寫模式:若有選取文字，則執行替換；否則觸發回呼
  * @param {string} newText - 要替換的新文字
  * @param {Function} onSuccess - 成功回呼
  * @param {Function} onEmpty - 無選取內容時的回呼
@@ -89,7 +150,7 @@ export async function replaceSelectedTextIfAny(newText, onSuccess, onEmpty, onEr
 }
 
 /**
- * 取得選取內容並設至指定輸入元素
+ * 撰寫模式:取得選取內容並設至指定輸入元素
  * @param {Ref|string|HTMLElement} target - 可為 Vue ref, selector 字串, 或 DOM 元素
  * @param {Function} [onSuccess] - 成功設值後的回呼
  * @param {Function} [onEmpty] - 若無選取內容的回呼
@@ -98,8 +159,18 @@ export async function replaceSelectedTextIfAny(newText, onSuccess, onEmpty, onEr
  */
 export async function fillSelectedTextToElement(target, onSuccess, onEmpty, onError, afterAll) {
   try {
-    const text = await getSelectedText();
-
+    const text = ref(null);
+    const mode = await getModeContent();
+    switch (mode) {
+      case 'read':
+        text = await getReadSelectedText();
+        break;
+      case 'compose':
+        text = await getSelectedText();
+      default:
+        text = null;
+    }
+    
     if (!text) {
       onEmpty?.();
       return;
