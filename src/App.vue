@@ -170,11 +170,14 @@
         class="cursor-not-allowed text-gray-900 dark:text-gray-400 m-0.5 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg py-2 px-2.5 inline-flex items-center justify-center bg-white border-gray-200 border h-8"
         :disabled="rtResult === ''">
         <span class="inline-flex items-center">
+          <component :is="CopyIcon" class="w-3 h-3 me-1.5" />
+          <!--
           <svg class="w-3 h-3 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
             fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-width="2"
               d="M14 4v3a1 1 0 0 1-1 1h-3m4 10v1a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h2m11-3v10a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1V7.87a1 1 0 0 1 .24-.65l2.46-2.87a1 1 0 0 1 .76-.35H18a1 1 0 0 1 1 1Z" />
           </svg>
+          -->
 
           <span class="text-xs font-semibold">{{ $t("Cover email selected text") }}</span>
         </span>
@@ -317,6 +320,7 @@ import { useConfigStore } from 'stores/config';
 import { useProviders } from 'apis/providers';
 import { refineText, translateText } from "utils/aiClient";
 import { useI18n } from 'vue-i18n'
+import { CopyIcon } from 'lucide-vue-next'
 
 import { replaceSelectedTextIfAny, fillSelectedTextToElement } from 'utils/outlookUtils';
 import { showAlert } from 'utils/alerts';
@@ -328,7 +332,7 @@ import Declaration from "./components/Declaration.vue";
  */
 let providersList;
 //t方法
-const { t } = useI18n();
+const { t, locale  } = useI18n();
 //初始定義
 const tabs = ['OpenAI', 'Grok', 'Claude', 'Gemini', 'Customize', 'Free'] // API 提供者名稱
 const providers = tabs.map(t => t.toLowerCase()); // 確保兩邊一致
@@ -478,12 +482,10 @@ onMounted(async () => {
 
   loadDefaultProvider();
 
-  const browserLang = navigator.language.split('-')[0]
-  const savedLang = localStorage.getItem('lang')
-  const nowLang = savedLang || (['en_US', 'zh_CN', 'zh_TW'].includes(browserLang) ? browserLang : 'zh_TW');
-  const group = getLanguageGroup(nowLang)
+  const savedLang = localStorage.getItem('lang') || locale.value
+  const group = getLanguageGroup(savedLang)
 
-  changeLanguage(group);
+  changeLanguage(group, mode.value);
 
 });
 
@@ -629,7 +631,10 @@ function setClearText() {
 
 function changeTranslator() {
 
-  changeLanguage(getLanguageGroup(localStorage.getItem('lang')), mode.value)
+  const loadLang = localStorage.getItem('lang') || locale.value;
+  const loadGroup = getLanguageGroup(loadLang);
+
+  changeLanguage(loadGroup, mode.value)
 
 }
 
