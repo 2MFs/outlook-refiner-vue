@@ -211,9 +211,9 @@
 
 
     <div class="flex justify-between items-center">
-      <hr class="w-full h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
+      <hr class="w-md md:w-full h-px my-2 bg-gray-200 border-0 dark:bg-gray-700">
       <button @click="showOption = !showOption" type="button"
-        class="w-1/4 md:w-1/5 cursor-pointer text-sm text-gray-600 hover:text-blue-600">
+        class="w-1/3 md:w-1/5 cursor-pointer text-sm text-gray-600 hover:text-blue-600">
 
         {{ $t("Options") }}
 
