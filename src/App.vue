@@ -146,7 +146,7 @@
     </div>
 
     <textarea v-model="inputText"
-      :placeholder="outlookMode.value == 'read' ? t('textarea select text placeholer') : t('textarea get content placeholer')"
+      :placeholder="outlookMode.value == 'read' ? t('textarea get content placeholer') : t('textarea select text placeholer')"
       class="w-full h-40 border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
       @input="handleTextInput"></textarea>
 
