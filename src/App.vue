@@ -477,7 +477,9 @@ onMounted(async () => {
 
   loadDefaultProvider();
 
-  const nowLang = localStorage.getItem('lang') || "";
+  const browserLang = navigator.language.split('-')[0]
+  const savedLang = localStorage.getItem('lang')
+  const nowLang = savedLang || (['en_US', 'zh_CN', 'zh_TW'].includes(browserLang) ? browserLang : 'zh_TW');
   const group = getLanguageGroup(nowLang)
 
   changeLanguage(group);

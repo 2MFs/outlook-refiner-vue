@@ -54,6 +54,8 @@
 
     onMounted( () => {
 
+        isDeclaration.value = localStorage.getItem("declaration") || false;
+
         // target element that will be dismissed
         const $targetEl = document.getElementById('alert-additional-content-1');
 
@@ -62,7 +64,7 @@
 
         const dismiss = new Dismiss($targetEl, $triggerEl, options, instanceOptions);
         
-        isDeclaration.value = localStorage.getItem("declaration") ?? false;
+        
 
     })
     
