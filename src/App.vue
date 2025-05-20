@@ -484,7 +484,7 @@ onMounted(async () => {
 
   loadDefaultProvider();
 
-  outlookMode.value = getModeContent();
+  outlookMode.value = await getModeContent();
   mode.value = outlookMode.value == 'read' ? 'translate' : 'refine';
 
 

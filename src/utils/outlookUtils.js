@@ -55,13 +55,7 @@ export async function getReadSelectedText() {
       // 獲取選取的文字
       Office.context.mailbox.item.body.getAsync('html', (result) => {
         if (result.status === Office.AsyncResultStatus.Succeeded) {
-          const selection = result.value.match(/<span class="ms-Text-selection">(.*?)<\/span>/)
-          if (selection || selection[1]) {
-            resolve(selection ?? selection[1]);
-          } else {
-            reject(result.error || new Error(`❌ ${t("No text selected or the selected area is empty.")}`));
-          }
-
+          resolve(result.value.trim());
         } else {
           reject(result.error || new Error(`❌ ${t("No text selected or the selected area is empty.")}`));
         }
