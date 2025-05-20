@@ -21,11 +21,11 @@ export async function getModeContent() {
     }
 
     if (Office.context?.mailbox?.item?.itemType === Office.MailboxEnums?.ItemType?.Message) {
-      if (Office.context?.mailbox?.item?.body && typeof Office.context?.mailbox?.item?.body?.getAsync === 'function') {
-        mode.value = 'read'
-       
-      } else if (Office.context?.mailbox?.item?.body && typeof Office.context?.mailbox?.item?.body?.setAsync === 'function') {
+      if (Office.context?.mailbox?.item?.body && typeof Office.context?.mailbox?.item?.body?.setAsync === 'function') {
         mode.value = 'compose'
+       
+      } else  {
+        mode.value = 'read'
        
       }
 
