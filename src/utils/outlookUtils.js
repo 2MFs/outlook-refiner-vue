@@ -159,18 +159,10 @@ export async function replaceSelectedTextIfAny(newText, onSuccess, onEmpty, onEr
  */
 export async function fillSelectedTextToElement(target, onSuccess, onEmpty, onError, afterAll) {
   try {
-    const text = ref(null);
+    
     const mode = await getModeContent();
-    console.log(mode);
-    switch (mode) {
-      case 'read':
-        text = await getReadSelectedText();
-        break;
-      case 'compose':
-        text = await getSelectedText();
-      default:
-        text = null;
-    }
+
+    const text = mode == "compose" ? getReadSelectedText() : getSelectedText() ;    
 
     if (!text) {
       onEmpty?.();
