@@ -162,7 +162,7 @@ export async function fillSelectedTextToElement(target, onSuccess, onEmpty, onEr
     
     const mode = await getModeContent();
 
-    const text = mode == "compose" ? getReadSelectedText() : getSelectedText() ;    
+    const text = mode == "compose" ? getSelectedText() : getReadSelectedText() ;    
 
     if (!text) {
       onEmpty?.();
