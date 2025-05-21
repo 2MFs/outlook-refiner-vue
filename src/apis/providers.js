@@ -16,28 +16,28 @@ function formatUrl(template, values) {
 // 各 AI 的 prompt 樣式
 const promptTemplates = {
   openai: {
-    refine: (text, style, lang) => `${t("openai refine prompt", {style: style, lang: lang})} \n${text}`,
-    translate: (text, lang) => `${t("openai translate prompt", {lang: lang})} \n${text}`
+    refine: (text, style, lang) => `${t("openai refine prompt", {style: style, lang: lang})} 「\n${text}」`,
+    translate: (text, lang) => `${t("openai translate prompt", {lang: lang})} 「\n${text}」`
   },
   grok: {
-    refine: (text, style, lang) => `${t("grok refine prompt",{style: style, lang: lang})} ${text}`,
-    translate: (text, lang) => `${t("grok translate prompt", {lang: lang})} ${text}`
+    refine: (text, style, lang) => `${t("grok refine prompt",{style: style, lang: lang})} 「${text}」`,
+    translate: (text, lang) => `${t("grok translate prompt", {lang: lang})} 「${text}」`
   },
   claude: {
-    refine: (text, style, lang) => `${t("claude refine prompt",{style: style, lang: lang})} ${text}`,
-    translate: (text, lang) => `${t("claude translate prompt", {lang: lang})} ${text}`
+    refine: (text, style, lang) => `${t("claude refine prompt",{style: style, lang: lang})} 「${text}」`,
+    translate: (text, lang) => `${t("claude translate prompt", {lang: lang})} 「${text}」`
   },
   gemini: {
-    refine: (text, style, lang) => `${t("gemini refine prompt", {style: style, lang: lang})} ${text}`,
-    translate: (text, lang) => `${t("gemini translate prompt", {lang: lang})} ${text}`
+    refine: (text, style, lang) => `${t("gemini refine prompt", {style: style, lang: lang})} 「${text}」`,
+    translate: (text, lang) => `${t("gemini translate prompt", {lang: lang})} 「${text}」`
   },
   customize: {
-    refine: (text, style, lang) => `${t("customize refine prompt", {style: style, lang: lang})} ${text}`,
-    translate: (text, lang) => `${t("customize translate prompt", {lang: lang})} ${text}`
+    refine: (text, style, lang) => `${t("customize refine prompt", {style: style, lang: lang})} 「${text}」`,
+    translate: (text, lang) => `${t("customize translate prompt", {lang: lang})} 「${text}」`
   },
   free: {
-    refine: (text, style, lang) => `${t("free refine prompt", {style: style, lang: lang})} ${text}`,
-    translate: (text, lang) => `${t("free translate prompt", {lang: lang})} ${text}`
+    refine: (text, style, lang) => `${t("free refine prompt", {style: style, lang: lang})} 「${text}」`,
+    translate: (text, lang) => `${t("free translate prompt", {lang: lang})} 「${text}」`
   }
 };
 
