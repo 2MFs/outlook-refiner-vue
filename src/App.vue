@@ -141,8 +141,8 @@
     </div>
 
     <div>
-      <p v-if="isTextSelected" class="text-sm text-green-600">✅ {{ outlookMode == 'read' ? $t("isTextGetText") : $t("isTextSelectedText") }}</p>
-      <p v-else class="text-sm text-red-500">⚠️ {{ outlookMode == 'read' ? $t("isTextGetYetText")  :  $t("isTextSelectedYetText") }}</p>
+      <p v-if="isTextSelected" class="text-sm text-green-600">✅ {{ outlookMode == 'read' ? $t("isContentGetText") : $t("isTextSelectedText") }}</p>
+      <p v-else class="text-sm text-red-500">⚠️ {{ outlookMode == 'read' ? $t("isContentGetYetText")  :  $t("isTextSelectedYetText") }}</p>
     </div>
 
     <textarea v-model="inputText"
