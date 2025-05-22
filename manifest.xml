@@ -7,9 +7,9 @@
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="Mail Refiner AI"/>
   <Description DefaultValue="潤色與翻譯你的郵件文字"/>
-  <IconUrl DefaultValue="https://outlook-refiner-vue.vercel.app/icon-32.png"/>
-  <HighResolutionIconUrl DefaultValue="https://outlook-refiner-vue.vercel.app/icon-80.png"/>
-  <SupportUrl DefaultValue="https://outlook-refiner-vue.vercel.app/docs/"/>
+  <IconUrl DefaultValue="https://outlook-refiner-vue.vercel.app/icon-64.png"/>
+  <HighResolutionIconUrl DefaultValue="https://outlook-refiner-vue.vercel.app/icon-128.png"/>
+  <SupportUrl DefaultValue="https://outlook-refiner-vue.vercel.app/"/>
 
   <AppDomains>
     <AppDomain>https://outlook-refiner-vue.vercel.app</AppDomain>
@@ -93,7 +93,9 @@
                     <Icon>
                         <bt:Image size="16" resid="icon16" />
                         <bt:Image size="32" resid="icon32" />
-                        <bt:Image size="80" resid="icon80" />
+                        <bt:Image size="64" resid="icon64"/>
+                        <bt:Image size="80" resid="icon80"/>
+                        <bt:Image size="128" resid="icon128"/>
                     </Icon>
                     <Action xsi:type="ShowTaskpane">
                         <SourceLocation resid="composeTaskPaneUrl" />
@@ -120,7 +122,9 @@
                     <Icon>
                       <bt:Image size="16" resid="icon16"/>
                       <bt:Image size="32" resid="icon32"/>
+                      <bt:Image size="64" resid="icon64"/>
                       <bt:Image size="80" resid="icon80"/>
+                      <bt:Image size="128" resid="icon128"/>
                     </Icon>
                     <Action xsi:type="ShowTaskpane">
                       <SourceLocation resid="messageReadTaskPaneUrl"/>
@@ -140,7 +144,9 @@
       <bt:Images>
         <bt:Image id="icon16" DefaultValue="https://outlook-refiner-vue.vercel.app/icon-16.png"/>
         <bt:Image id="icon32" DefaultValue="https://outlook-refiner-vue.vercel.app/icon-32.png"/>
+        <bt:Image id="icon64" DefaultValue="https://outlook-refiner-vue.vercel.app/icon-64.png"/>
         <bt:Image id="icon80" DefaultValue="https://outlook-refiner-vue.vercel.app/icon-80.png"/>
+        <bt:Image id="icon128" DefaultValue="https://outlook-refiner-vue.vercel.app/icon-128.png"/>
       </bt:Images>
       <bt:Urls>
         <bt:Url id="composeTaskPaneUrl" DefaultValue="https://outlook-refiner-vue.vercel.app/"/>
